@@ -1,25 +1,25 @@
 # -*- coding: utf-8 -*-
+from app_data import AppDataField
 from django.db import models
-
-
-class AppHookConfigManager(models.Manager):
-    def config(self, namespace):
-        generic_config = self.get(namespace)
-        config_class = load_model(self.get(namespace=namespace).type)
-        return config_class.objects.get(pk=generic_config.pk)
+from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import python_2_unicode_compatible
 
 
 @python_2_unicode_compatible
 class AppHookConfig(models.Model):
-    type = models.CharField()
-    namespace = models.CharField()
-
-    objects = AppHookConfigManager()
+    """
+    This is the generic (abstract) model that holds the configurations for each AppHookConfig
+    concrete model
+    """
+    type = models.CharField(max_length=100)
+    namespace = models.CharField(max_length=100)
+    app_data = AppDataField()
 
     class Meta:
         verbose_name = _(u'app-hook config')
         verbose_name_plural = _(u'app-hook configs')
         unique_together = ('type', 'namespace')
+        abstract = True
 
     def save(self, *args, **kwargs):
         self.type = '%s.%s' % (
