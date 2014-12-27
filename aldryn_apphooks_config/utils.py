@@ -16,7 +16,7 @@ def get_app_instance(request):
     config = None
     namespace = resolve(request.path_info).namespace
     if app.app_config:
-        config = app.get_app_config(namespace)
+        config = app.get_config(namespace)
     return namespace, config
 
 

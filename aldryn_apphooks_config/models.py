@@ -27,4 +27,4 @@ class AppHookConfig(models.Model):
         super(AppHookConfig, self).save(*args, **kwargs)
 
     def __str__(self):
-        return _(u'%s / %s' % (self.type, self.namespace))
+        return _(u'%s / %s') % (self.type, self.namespace)
