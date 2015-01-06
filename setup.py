@@ -36,6 +36,8 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
+        'django-appdata',
+        'django-cms',
     ],
     license="BSD",
     zip_safe=False,

@@ -5,6 +5,7 @@ HELPER_SETTINGS = {
         ('de', 'German'),
     ),
     'INSTALLED_APPS': [
+        'app_data',
         'aldryn_newsblog',
         'aldryn_people',
         'easy_thumbnails',
