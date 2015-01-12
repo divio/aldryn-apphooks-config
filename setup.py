@@ -30,14 +30,17 @@ setup(
     long_description=readme + '\n\n' + history,
     author='Iacopo Spalletti',
     author_email='i.spalletti@nephila.it',
-    url='https://github.com/nephila/aldryn-apphooks-config',
+    url='https://github.com/aldryn/aldryn-apphooks-config',
     packages=[
         'aldryn_apphooks_config',
     ],
     include_package_data=True,
     install_requires=[
         'django-appdata',
-        'django-cms',
+        'django-cms>=3.0.90a1',
+    ],
+    dependency_links=[
+        'https://github.com/yakky/django-cms/tarball/future/integration#egg=django-cms-3.0.90a1'
     ],
     test_suite='test_settings.run',
     license="BSD",
@@ -54,5 +57,6 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
     ],
 )
