@@ -9,8 +9,4 @@ tox>=1.7.0
 djangocms-helper
 djangocms-text-ckeditor
 aldryn-people
--e git+https://github.com/yakky/django-cms/@feature/appspaced_apphooks#egg=django-cms
--e git+git@github.com:aldryn/aldryn-newsblog@feature/apphook_config#egg=aldryn-newsblog
-django-appdata
-
-# Additional test requirements go here
+-e git+https://github.com/aldryn/aldryn-newsblog/#egg=aldryn-newsblog

@@ -39,6 +39,7 @@ setup(
         'django-appdata',
         'django-cms',
     ],
+    test_suite='test_settings.run',
     license="BSD",
     zip_safe=False,
     keywords='aldryn-apphooks-config',

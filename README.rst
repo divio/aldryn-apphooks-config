@@ -28,7 +28,7 @@ Install dependencies::
 
 Run using djangocms-helper::
 
-    djangocms-helper aldryn_apphooks_config server --cms --extra-settings=test_settings
+    python test_settings.py server --cms
 
 Then:
 
