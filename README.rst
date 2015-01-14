@@ -124,7 +124,7 @@ Implementation step-guide
         app_name = 'aldryn_newsblog'
         # this option is specific of CMSConfigApp, and links the
         # CMSApp to a specific AppHookConfig model
-        app_config =
+        app_config = NewsBlogConfig
 
     apphook_pool.register(NewsBlogApp)
 
@@ -135,7 +135,7 @@ Implementation step-guide
 
     class ArticleDetail(AppConfigMixin, DetailView):
         def get_queryset(self):
-            return Article.objects
+            return Article.objects.filter(namespace__namespace=self.namespace)
 
   ``AppConfigMixin`` provides the following attributes to the view class:
 
