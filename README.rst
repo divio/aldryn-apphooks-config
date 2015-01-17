@@ -137,11 +137,14 @@ Implementation step-guide
         def get_queryset(self):
             return Article.objects.filter(namespace__namespace=self.namespace)
 
-  ``AppConfigMixin`` provides the following attributes to the view class:
+  ``AppConfigMixin`` provides a complete support to namespaces, so the view
+  is not required to set anything specific to support them; the following
+  attributes are set for the view class instance:
 
-    * current namespace in self.namespace
-    * namespace configuration in self.config (the instance of NewsBlogConfig)
-    * current application in the `current_app` context variable
+    * current namespace in ``self.namespace``
+    * namespace configuration (the instance of NewsBlogConfig) in ``self.config``
+    * current application in the ``current_app`` parameter passed to the
+      Response class
 
 Test setup
 ==========
