@@ -11,8 +11,8 @@ class AppHookConfig(models.Model):
     This is the generic (abstract) model that holds the configurations for each AppHookConfig
     concrete model
     """
-    type = models.CharField(max_length=100)
-    namespace = models.CharField(max_length=100)
+    type = models.CharField(_('type'), max_length=100)
+    namespace = models.CharField(_(u'instance namespace'), default=None, max_length=100)
     app_data = AppDataField()
 
     class Meta:
