@@ -11,11 +11,13 @@ def get_app_instance(request):
     :param request: request object
     :return: namespace, config
     """
-    app = apphook_pool.get_apphook(request.current_page.application_urls)
+    app = None
+    if request.current_page:
+        app = apphook_pool.get_apphook(request.current_page.application_urls)
 
     config = None
     namespace = resolve(request.path_info).namespace
-    if app.app_config:
+    if app and app.app_config:
         config = app.get_config(namespace)
     return namespace, config
 
