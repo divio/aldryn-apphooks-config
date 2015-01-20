@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from cms.app_base import CMSApp
 
@@ -9,7 +10,10 @@ class CMSConfigApp(CMSApp):
         return self.app_config.objects.all()
 
     def get_config(self, namespace):
-        return self.app_config.objects.get(namespace=namespace)
+        try:
+            return self.app_config.objects.get(namespace=namespace)
+        except ObjectDoesNotExist:
+            return None
 
     def get_config_add_url(self):
         return reverse('admin:%s_%s_add' % (self.app_config._meta.app_label,
