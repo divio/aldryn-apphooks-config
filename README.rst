@@ -11,7 +11,7 @@ aldryn-apphooks-config
 .. image:: https://coveralls.io/repos/aldryn/aldryn-apphooks-config/badge.png?branch=master
     :target: https://coveralls.io/r/aldryn/aldryn-apphooks-config?branch=master
 
-Namespaces based configuration for app-hooks
+Namespaces based configuration for Apphooks
 
 Quickstart
 ----------

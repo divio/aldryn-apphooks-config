@@ -26,7 +26,7 @@ history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 setup(
     name='aldryn-apphooks-config',
     version=version,
-    description="""Namespaces based configuration for app-hooks""",
+    description="""Namespaces based configuration for Apphooks""",
     long_description=readme + '\n\n' + history,
     author='Iacopo Spalletti',
     author_email='i.spalletti@nephila.it',
