@@ -16,8 +16,8 @@ class AppHookConfig(models.Model):
     app_data = AppDataField()
 
     class Meta:
-        verbose_name = _(u'app-hook config')
-        verbose_name_plural = _(u'app-hook configs')
+        verbose_name = _(u'Apphook config')
+        verbose_name_plural = _(u'Apphook configs')
         unique_together = ('type', 'namespace')
         abstract = True
 
