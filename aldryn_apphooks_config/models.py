@@ -15,6 +15,8 @@ class AppHookConfig(models.Model):
     namespace = models.CharField(_(u'instance namespace'), default=None, max_length=100)
     app_data = AppDataField()
 
+    cmsapp = None
+
     class Meta:
         verbose_name = _(u'Apphook config')
         verbose_name_plural = _(u'Apphook configs')
@@ -27,4 +29,7 @@ class AppHookConfig(models.Model):
         super(AppHookConfig, self).save(*args, **kwargs)
 
     def __str__(self):
-        return _(u'%s / %s') % (self.type, self.namespace)
+        if self.cmsapp:
+            return _(u'%s / %s') % (self.cmsapp.name, self.namespace)
+        else:
+            return _(u'%s / %s') % (self.type, self.namespace)
