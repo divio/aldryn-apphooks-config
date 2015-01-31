@@ -1,8 +1,8 @@
 |PyPI Version| |Build Status| |Coverage Status|
 
-=============================
+======================
 aldryn-apphooks-config
-=============================
+======================
 
 Namespaces based configuration for Apphooks
 
