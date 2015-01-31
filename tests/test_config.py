@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
+from aldryn_apphooks_config.utils import get_app_instance
+from cms import api
+from cms.apphook_pool import apphook_pool
+from cms.utils import get_cms_setting
 from django.core.urlresolvers import reverse
 from django.http import SimpleCookie
+from django.utils.encoding import force_text
 from django.utils.six import StringIO
-from aldryn_apphooks_config.utils import get_app_instance
-from cms.apphook_pool import apphook_pool
-from cms import api
-from djangocms_helper.base_test import BaseTestCase
 from django.conf import settings
-from cms.utils import get_cms_setting
-from tests.utils.example.models import ExampleConfig, Article
+from djangocms_helper.base_test import BaseTestCase
+
+
+from .utils.example.models import ExampleConfig, Article
 
 
 class AppHookConfigTestCase(BaseTestCase):
@@ -65,27 +68,30 @@ class AppHookConfigTestCase(BaseTestCase):
         self.assertEqual((u'', None), config)
 
     def test_no_page(self):
-        request = self.request_factory.get('/en/')
+        request = self.request_factory.get('/en/sample/login/')
         request.user = self.user
         request.session = {}
         request.cookies = SimpleCookie()
         request.errors = StringIO()
 
         # when config is requested on a non-CMS url, just return empty data
-        with self.settings(ROOT_URLCONF='cms.test_utils.project.sampleapp.urls2'):
+        with self.settings(ROOT_URLCONF='cms.test_utils.project.urls'):
             config = get_app_instance(request)
             self.assertEqual((u'', None), config)
 
     def test_config_str(self):
         app = apphook_pool.get_apphook(self.page_1.application_urls)
-        st1 = unicode(self.ns_app_1)
-        self.assertEqual('%s / %s' % (unicode(app.name), self.ns_app_1.namespace), st1)
+        self.assertEqual('%s / %s' % (force_text(app.name), self.ns_app_1.namespace), force_text(self.ns_app_1))
 
     def test_admin_url(self):
         app = apphook_pool.get_apphook(self.page_1.application_urls)
         url = app.get_config_add_url()
-        self.assertEqual(url, reverse('admin:%s_%s_add' % (ExampleConfig._meta.app_label,
-                                                           ExampleConfig._meta.model_name)))
+        try:
+            self.assertEqual(url, reverse('admin:%s_%s_add' % (ExampleConfig._meta.app_label,
+                                                               ExampleConfig._meta.model_name)))
+        except AttributeError:  #NOQA
+            self.assertEqual(url, reverse('admin:%s_%s_add' % (ExampleConfig._meta.app_label,
+                                                               ExampleConfig._meta.module_name)))
 
     def test_app_1_list_empty(self):
         response = self.client.get('/en/page_1/')
