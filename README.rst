@@ -1,15 +1,8 @@
+|PyPI Version| |Build Status| |Coverage Status|
+
 =============================
 aldryn-apphooks-config
 =============================
-
-.. image:: https://badge.fury.io/py/aldryn-apphooks-config.png
-    :target: https://badge.fury.io/py/aldryn-apphooks-config
-
-.. image:: https://travis-ci.org/aldryn/aldryn-apphooks-config.png?branch=master
-    :target: https://travis-ci.org/aldryn/aldryn-apphooks-config
-
-.. image:: https://coveralls.io/repos/aldryn/aldryn-apphooks-config/badge.png?branch=master
-    :target: https://coveralls.io/r/aldryn/aldryn-apphooks-config?branch=master
 
 Namespaces based configuration for Apphooks
 
@@ -171,3 +164,10 @@ Features
 --------
 
 * TODO
+
+.. |PyPI Version| image:: http://img.shields.io/pypi/v/aldryn-apphooks-config.svg
+   :target: https://pypi.python.org/pypi/aldryn-apphooks-config
+.. |Build Status| image:: http://img.shields.io/travis/aldryn/aldryn-apphooks-config/master.svg
+   :target: https://travis-ci.org/aldryn/aldryn-apphooks-config
+.. |Coverage Status| image:: http://img.shields.io/coveralls/aldryn/aldryn-apphooks-config/master.svg
+   :target: https://coveralls.io/r/aldryn/aldryn-apphooks-config?branch=master
