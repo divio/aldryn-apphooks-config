@@ -6,14 +6,9 @@ HELPER_SETTINGS = {
     ),
     'INSTALLED_APPS': [
         'app_data',
-        'aldryn_newsblog',
-        'aldryn_people',
-        'easy_thumbnails',
-        'parler',
         'djangocms_text_ckeditor',
-        'hvad',
-        'filer',
-        'cms.test_utils.project.sampleapp'
+        'cms.test_utils.project.sampleapp',
+        'tests.utils.example',
     ],
 }
 
