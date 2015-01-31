@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from django.views.generic import ListView, DetailView
 from aldryn_apphooks_config.mixins import AppConfigMixin
+from django.views.generic import ListView, DetailView
 
 from .models import Article
 

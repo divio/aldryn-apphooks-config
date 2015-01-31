@@ -1,7 +1,6 @@
-from django.conf.urls import patterns
-from django.conf.urls import url
 from aldryn_apphooks_config.app_base import CMSConfigApp
 from cms.apphook_pool import apphook_pool
+from django.conf.urls import patterns, url
 from django.utils.translation import ugettext_lazy as _
 
 from .models import ExampleConfig

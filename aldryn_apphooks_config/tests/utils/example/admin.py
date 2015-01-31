@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from django.contrib import admin
 from aldryn_apphooks_config.admin import BaseAppHookConfig
 from cms.admin.placeholderadmin import FrontendEditableAdminMixin
+from django.contrib import admin
 
 from .models import Article, ExampleConfig
 
