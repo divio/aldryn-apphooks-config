@@ -1,0 +1,7 @@
+{% extends CMS_TEMPLATE %}
+
+{% block content %}
+namespace:{{view.namespace}}
+property:{{view.config.property}}
+objects:{{object_list.count}}
+{% endblock content %}

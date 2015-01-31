@@ -16,5 +16,9 @@ class CMSConfigApp(CMSApp):
             return None
 
     def get_config_add_url(self):
-        return reverse('admin:%s_%s_add' % (self.app_config._meta.app_label,
-                                            self.app_config._meta.model_name))
+        try:
+            return reverse('admin:%s_%s_add' % (self.app_config._meta.app_label,
+                                                self.app_config._meta.model_name))
+        except AttributeError:  #NOQA
+            return reverse('admin:%s_%s_add' % (self.app_config._meta.app_label,
+                                                self.app_config._meta.module_name))

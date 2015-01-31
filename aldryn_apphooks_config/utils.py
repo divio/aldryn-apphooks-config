@@ -12,7 +12,7 @@ def get_app_instance(request):
     :return: namespace, config
     """
     app = None
-    if request.current_page:
+    if getattr(request, 'current_page', None):
         app = apphook_pool.get_apphook(request.current_page.application_urls)
 
     config = None

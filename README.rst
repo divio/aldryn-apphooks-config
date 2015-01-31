@@ -1,46 +1,10 @@
 |PyPI Version| |Build Status| |Coverage Status|
 
-=============================
+======================
 aldryn-apphooks-config
-=============================
+======================
 
 Namespaces based configuration for Apphooks
-
-Quickstart
-----------
-
-To start testing namespace configuration::
-
-    pip install https://github.com/aldryn/aldryn-apphooks-config/archive/master.zip
-
-The application defines a runnable testing configuration to experiment with it:
-
-Install dependencies::
-
-    pip install -r requirements-test.txt
-
-Run using djangocms-helper::
-
-    python test_settings.py server --cms
-
-Then:
-
-* go to http://localhost:8000
-* create an home page
-* create a child page
-* go to the advanced settings
-* select "NewsBlog" application
-* an empty "Application configurations" appears
-* click on the "+" icon and define an application configuration
-* the newly created configuration is selected in the dropdown
-* save and publish the page
-* go to "Aldryn_Newsblog" -> "Articles" -> "Add article"
-* fill in with the requested data; from the "namespace" dropdown select the above configuration
-* save
-* profit!
-
-Implement support for apphooks configuration
---------------------------------------------
 
 Basic concepts
 ==============
@@ -134,10 +98,10 @@ Implementation step-guide
   is not required to set anything specific to support them; the following
   attributes are set for the view class instance:
 
-    * current namespace in ``self.namespace``
-    * namespace configuration (the instance of NewsBlogConfig) in ``self.config``
-    * current application in the ``current_app`` parameter passed to the
-      Response class
+  * current namespace in ``self.namespace``
+  * namespace configuration (the instance of NewsBlogConfig) in ``self.config``
+  * current application in the ``current_app`` parameter passed to the
+    Response class
 
 Test setup
 ==========
@@ -159,11 +123,6 @@ make sure you add the following code to your TestCase::
             # publish the page to make the apphook available
             self.page.publish(self.language)
 
-
-Features
---------
-
-* TODO
 
 .. |PyPI Version| image:: http://img.shields.io/pypi/v/aldryn-apphooks-config.svg
    :target: https://pypi.python.org/pypi/aldryn-apphooks-config

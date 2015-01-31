@@ -33,3 +33,15 @@ class AppHookConfig(models.Model):
             return _(u'%s / %s') % (self.cmsapp.name, self.namespace)
         else:
             return _(u'%s / %s') % (self.type, self.namespace)
+
+    def __getattr__(self, item):
+        """
+        This allows to access config form attribute as normal model fields
+
+        :param item:
+        :return:
+        """
+        try:
+            return getattr(self.app_data.config, item)
+        except:
+            raise AttributeError('attribute %s not found' % item)
