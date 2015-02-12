@@ -23,7 +23,7 @@ class AppHookConfigTranslatableQueryset(TranslatableQuerySet, QuerySetMixin):
         #
         # TODO: this create is copy of TranslatableQuerySet.create which
         # in someway is not called when using .language('en').create(..)
-        # and instead is calledn Django Manager.create. I not figured why
+        # and instead is called Django Manager.create. I not figured why
         # it is acting like that.
         if self._language:
             kwargs['_current_language'] = self._language
@@ -37,5 +37,6 @@ class AppHookConfigTranslatableManager(TranslatableManager, ManagerMixin):
     that should be used to filter objects by it namespace.
     """
     queryset_class = AppHookConfigTranslatableQueryset
+
     def get_queryset(self):
         return AppHookConfigTranslatableQueryset(self.model, using=self.db)

@@ -50,8 +50,9 @@ Implementation step-guide
 
     Article.objects.namespace('foobar')
 
-There is a proper queryset, the ``ApphooksConfigQueryset``, and parler
-integrated variants, the ``AppHookConfigTranslatableManager`` and
+There is also a proper queryset, the ``ApphooksConfigQueryset``. Parler
+integrated variants can be found in ``aldryn_apphooks_config.managers.parler``.
+Names are ``AppHookConfigTranslatableManager`` and
 ``AppHookConfigTranslatableQueryset``.
 
 * Define a ConfigForm::

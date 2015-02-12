@@ -14,6 +14,7 @@ def get_apphook_field_names(model):
             fields.append(field)
     return [field.name for field in fields]
 
+
 class QuerySetMixin(object):
 
     def namespace(self, namespace, to=None):
