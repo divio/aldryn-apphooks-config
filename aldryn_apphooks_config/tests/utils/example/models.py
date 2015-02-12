@@ -2,7 +2,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from aldryn_apphooks_config.managers import ApphooksConfigManager
+from aldryn_apphooks_config.managers import AppHookConfigManager
 from .config import ExampleConfig, AnotherExampleConfig
 
 
@@ -11,10 +11,10 @@ class Article(models.Model):
     slug = models.SlugField()
     section = models.ForeignKey(ExampleConfig, verbose_name=_('section'))
 
-    objects = ApphooksConfigManager()
+    objects = AppHookConfigManager()
 
 
 class News(Article):
     config = models.ForeignKey(AnotherExampleConfig, verbose_name=_('config'))
 
-    objects = ApphooksConfigManager()
+    objects = AppHookConfigManager()

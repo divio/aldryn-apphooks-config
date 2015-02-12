@@ -37,6 +37,23 @@ Implementation step-guide
   Implementation can be completely empty as the schema is defined in the
   parent (abstract) model
 
+* Use apphooks managers in your model::
+
+    from aldryn_apphooks_config.managers import AppHookConfigManager
+
+    class Article(models.Model):
+        title = models.CharField()
+
+        objects = AppHookConfigManager()
+
+``AppHookConfigManager`` adds ``namespace`` method to manager and queryset::
+
+    Article.objects.namespace('foobar')
+
+There is a proper queryset, the ``ApphooksConfigQueryset``, and parler
+integrated variants, the ``AppHookConfigTranslatableManager`` and
+``AppHookConfigTranslatableQueryset``.
+
 * Define a ConfigForm::
 
     from app_data import AppDataForm

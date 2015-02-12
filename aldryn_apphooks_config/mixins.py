@@ -4,7 +4,7 @@ from .utils import get_app_instance
 
 class AppConfigMixin(object):
     """
-    This mixin must be attached to any class-based views used which implements ApphooksConfig.
+    This mixin must be attached to any class-based views used which implements AppHookConfig.
 
     It provides:
     * current namespace in self.namespace

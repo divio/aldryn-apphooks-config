@@ -17,7 +17,7 @@ def get_apphook_field_names(model):
     return [field.name for field in fields]
 
 
-class ApphooksConfigQueryset(QuerySet):
+class AppHookConfigQueryset(QuerySet):
 
     def namespace(self, namespace, to=None):
         """
@@ -51,25 +51,25 @@ class ApphooksConfigQueryset(QuerySet):
         kwargs = {lookup: namespace}
         return self.filter(**kwargs)
 
-class ApphooksConfigTranslatableQueryset(ApphooksConfigQueryset,
+class AppHookConfigTranslatableQueryset(ApphooksConfigQueryset,
                                          TranslatableQuerySet):
     pass
 
 
-class ApphooksConfigManager(Manager):
+class AppHookConfigManager(Manager):
     """
     Manager intended to use in models that has relations to apphooks
     configs. Add the namespace method to manager and queryset that should
     be used to filter objects by it namespace.
     """
     def get_queryset(self):
-        return ApphooksConfigQueryset(self.model, using=self.db)
+        return AppHookConfigQueryset(self.model, using=self.db)
 
     def namespace(self, namespace, to=None):
         return self.get_queryset().namespace(namespace, to=to)
 
 
-class ApphooksConfigTranslatableManager(ApphooksConfigManager,
+class AppHookConfigTranslatableManager(ApphooksConfigManager,
                                         TranslatableManager):
     """
     Manager intended to use in TranslatableModels that has relations
@@ -77,4 +77,4 @@ class ApphooksConfigTranslatableManager(ApphooksConfigManager,
     that should be used to filter objects by it namespace.
     """
     def get_queryset(self):
-        return ApphooksConfigTranslatableQueryset(self.model, using=self.db)
+        return AppHookConfigTranslatableQueryset(self.model, using=self.db)

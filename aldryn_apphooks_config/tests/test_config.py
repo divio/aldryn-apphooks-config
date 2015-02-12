@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from aldryn_apphooks_config.utils import get_app_instance
-from aldryn_apphooks_config.managers import ApphooksConfigManager
+from aldryn_apphooks_config.managers import AppHookConfigManager
 
 from cms import api
 from cms.apphook_pool import apphook_pool
