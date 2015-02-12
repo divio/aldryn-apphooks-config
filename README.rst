@@ -109,7 +109,7 @@ integrated variants, the ``AppHookConfigTranslatableManager`` and
 
     class ArticleDetail(AppConfigMixin, DetailView):
         def get_queryset(self):
-            return Article.objects.filter(namespace__namespace=self.namespace)
+            return Article.objects.namespace(self.namespace)
 
   ``AppConfigMixin`` provides a complete support to namespaces, so the view
   is not required to set anything specific to support them; the following
