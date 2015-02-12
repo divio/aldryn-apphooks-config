@@ -38,6 +38,7 @@ setup(
     install_requires=[
         'django-appdata>=0.1.3',
         'django-cms>=3.0.90a1',
+        'django-parler>=1.2.1,<1.3'
     ],
     dependency_links=[
         'https://github.com/yakky/django-cms/tarball/future/integration#egg=django-cms-3.0.90a1',

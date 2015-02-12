@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from aldryn_apphooks_config.utils import get_app_instance
+from aldryn_apphooks_config.managers import ApphooksConfigManager
+
 from cms import api
 from cms.apphook_pool import apphook_pool
 from cms.utils import get_cms_setting
@@ -11,7 +13,7 @@ from django.conf import settings
 from djangocms_helper.base_test import BaseTestCase
 
 
-from .utils.example.models import ExampleConfig, Article
+from .utils.example.models import AnotherExampleConfig, ExampleConfig, Article, News
 
 
 class AppHookConfigTestCase(BaseTestCase):
@@ -120,3 +122,48 @@ class AppHookConfigTestCase(BaseTestCase):
         self.assertContains(response, 'namespace:app2')
         self.assertContains(response, 'property:app2_property')
         self.assertContains(response, 'objects:1')
+
+    def test_apphook_manager_on_simple_model(self):
+
+        Article.objects.create(title='article_1_app_1',
+                               slug='article_1_app_1',
+                               section=self.ns_app_1)
+        Article.objects.create(title='article_2_app_1',
+                               slug='article_2_app_1',
+                               section=self.ns_app_1)
+        Article.objects.create(title='article_1_app_2',
+                               slug='article_1_app_2',
+                               section=self.ns_app_2)
+
+        self.assertEqual(
+            2, Article.objects.namespace(self.ns_app_1.namespace).count()
+        )
+        self.assertEqual(
+            1, Article.objects.namespace(self.ns_app_2.namespace).count()
+        )
+
+    def test_apphook_manager_on_model_with_two_configs(self):
+        ans_config_1 = AnotherExampleConfig.objects.create(namespace='config1')
+        ans_config_2 = AnotherExampleConfig.objects.create(namespace='config2')
+        News.objects.create(title='news_1_app_1_config1',
+                            slug='news_1_app_1_config1',
+                            section=self.ns_app_1,
+                            config=ans_config_1)
+        News.objects.create(title='news_2_app_1_config2',
+                            slug='news_2_app_1_config2',
+                            section=self.ns_app_1,
+                            config=ans_config_2)
+        msg = ("'{}' has {} relations to an ApphookConfig model."
+               " Please, specify which one to use in argument 'to'."
+               " Choices are: {}".format('News', '2', 'section, config'))
+        self.assertRaisesMessage(
+            ValueError, msg, News.objects.namespace, ans_config_1.namespace
+        )
+        self.assertEqual(
+            1, News.objects.namespace(ans_config_1.namespace,
+                                      to='config').count()
+        )
+        self.assertEqual(
+            2, News.objects.namespace(self.ns_app_1.namespace,
+                                      to='section').count()
+        )

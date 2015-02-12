@@ -13,6 +13,15 @@ class ExampleConfig(AppHookConfig):
     app_title = models.CharField(_('application title'), max_length=234)
 
 
+class AnotherExampleConfig(AppHookConfig):
+    max_entries = models.SmallIntegerField(default=5)
+
+
 class ExampleConfigForm(AppDataForm):
     property = forms.CharField()
 setup_config(ExampleConfigForm, ExampleConfig)
+
+
+class AnotherExampleConfigForm(AppDataForm):
+    property = forms.CharField()
+setup_config(AnotherExampleConfigForm, AnotherExampleConfig)

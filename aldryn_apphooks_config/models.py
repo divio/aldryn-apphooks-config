@@ -4,6 +4,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
 
+from .managers import ApphooksConfigManager
+
 
 @python_2_unicode_compatible
 class AppHookConfig(models.Model):
