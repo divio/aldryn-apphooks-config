@@ -14,8 +14,7 @@ def get_apphook_field_names(model):
             fields.append(field)
     return [field.name for field in fields]
 
-
-class AppHookConfigQuerySet(QuerySet):
+class QuerySetMixin(object):
 
     def namespace(self, namespace, to=None):
         """
@@ -50,7 +49,17 @@ class AppHookConfigQuerySet(QuerySet):
         return self.filter(**kwargs)
 
 
-class AppHookConfigManager(Manager):
+class ManagerMixin(object):
+
+    def namespace(self, namespace, to=None):
+        return self.get_queryset().namespace(namespace, to=to)
+
+
+class AppHookConfigQuerySet(QuerySetMixin, QuerySet):
+    pass
+
+
+class AppHookConfigManager(ManagerMixin, Manager):
     """
     Manager intended to use in models that has relations to apphooks
     configs. Add the namespace method to manager and queryset that should
@@ -58,8 +67,4 @@ class AppHookConfigManager(Manager):
     """
     def get_queryset(self):
         return AppHookConfigQuerySet(self.model, using=self.db)
-
-    def namespace(self, namespace, to=None):
-        return self.get_queryset().namespace(namespace, to=to)
-
 

@@ -10,17 +10,27 @@ except ImportError:
     )
 
 from aldryn_apphooks_config.managers.base import (
-    AppHookConfigQuerySet, AppHookConfigManager
+    QuerySetMixin, ManagerMixin
 )
 
 
-class AppHookConfigTranslatableQueryset(AppHookConfigQuerySet,
-                                        TranslatableQuerySet):
-    pass
+class AppHookConfigTranslatableQueryset(TranslatableQuerySet, QuerySetMixin):
+
+    def create(self, **kwargs):
+        # Pass language setting to the object, as people start assuming
+        # things like .language('xx').create(..) which is a nice API
+        # after all.
+        #
+        # TODO: this create is copy of TranslatableQuerySet.create which
+        # in someway is not called when using .language('en').create(..)
+        # and instead is calledn Django Manager.create. I not figured why
+        # it is acting like that.
+        if self._language:
+            kwargs['_current_language'] = self._language
+        return super(TranslatableQuerySet, self).create(**kwargs)
 
 
-class AppHookConfigTranslatableManager(AppHookConfigManager,
-                                       TranslatableManager):
+class AppHookConfigTranslatableManager(TranslatableManager, ManagerMixin):
     """
     Manager intended to use in TranslatableModels that has relations
     to apphooks configs. Add the namespace method to manager and queryset
