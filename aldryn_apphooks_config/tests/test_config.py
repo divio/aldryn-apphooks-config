@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from aldryn_apphooks_config.utils import get_app_instance
+from aldryn_apphooks_config.managers import AppHookConfigManager
+
 from cms import api
 from cms.apphook_pool import apphook_pool
 from cms.utils import get_cms_setting
@@ -11,7 +13,9 @@ from django.conf import settings
 from djangocms_helper.base_test import BaseTestCase
 
 
-from .utils.example.models import ExampleConfig, Article
+from .utils.example.models import (
+    AnotherExampleConfig, ExampleConfig, Article, News, TranslatableArticle
+)
 
 
 class AppHookConfigTestCase(BaseTestCase):
@@ -120,3 +124,86 @@ class AppHookConfigTestCase(BaseTestCase):
         self.assertContains(response, 'namespace:app2')
         self.assertContains(response, 'property:app2_property')
         self.assertContains(response, 'objects:1')
+
+    def test_apphook_manager_on_simple_model(self):
+        ns_app_3 = ExampleConfig.objects.create(namespace='app3')
+        ns_app_3.app_data.config.property = 'app3_property'
+        ns_app_3.save()
+
+        Article.objects.create(title='article_1_app_1',
+                               slug='article_1_app_1',
+                               section=self.ns_app_1)
+        Article.objects.create(title='article_2_app_1',
+                               slug='article_2_app_1',
+                               section=self.ns_app_1)
+        Article.objects.create(title='article_1_app_2',
+                               slug='article_1_app_2',
+                               section=self.ns_app_2)
+
+        self.assertEqual(
+            2, Article.objects.namespace(self.ns_app_1.namespace).count()
+        )
+        self.assertEqual(
+            1, Article.objects.namespace(self.ns_app_2.namespace).count()
+        )
+        self.assertEqual(
+            0, Article.objects.namespace(ns_app_3.namespace).count()
+        )
+        self.assertEqual(
+            0, Article.objects.namespace('').count()
+        )
+
+    def test_apphook_manager_on_model_with_two_configs(self):
+        ans_config_1 = AnotherExampleConfig.objects.create(namespace='config1')
+        ans_config_2 = AnotherExampleConfig.objects.create(namespace='config2')
+        News.objects.create(title='news_1_app_1_config1',
+                            slug='news_1_app_1_config1',
+                            section=self.ns_app_1,
+                            config=ans_config_1)
+        News.objects.create(title='news_2_app_1_config2',
+                            slug='news_2_app_1_config2',
+                            section=self.ns_app_1,
+                            config=ans_config_2)
+        msg = ("'{0}' has {1} relations to an ApphookConfig model."
+               " Please, specify which one to use in argument 'to'."
+               " Choices are: {2}".format('News', '2', 'section, config'))
+        self.assertRaisesMessage(
+            ValueError, msg, News.objects.namespace, ans_config_1.namespace
+        )
+        self.assertEqual(
+            1, News.objects.namespace(ans_config_1.namespace,
+                                      to='config').count()
+        )
+        self.assertEqual(
+            2, News.objects.namespace(self.ns_app_1.namespace,
+                                      to='section').count()
+        )
+
+    def test_translatable_apphook_manager(self):
+        t1 = TranslatableArticle.objects.language('en').create(
+            title='article_1_app_1_en', slug='article_1_app_1_en',
+            section=self.ns_app_1
+        )
+        self.assertEqual(t1.get_current_language(), 'en')
+        t2 = TranslatableArticle.objects.language('de').create(
+            title='article_2_app_1_de', slug='article_2_app_1_de',
+            section=self.ns_app_1
+        )
+        self.assertEqual(t2.get_current_language(), 'de')
+
+        self.assertEqual(
+            2, TranslatableArticle.objects.namespace(self.ns_app_1.namespace)
+                                          .count()
+        )
+        self.assertEqual(
+            1,
+            TranslatableArticle.objects.namespace(self.ns_app_1.namespace)
+                                       .translated('en')
+                                       .count()
+        )
+        self.assertEqual(
+            1,
+            TranslatableArticle.objects.namespace(self.ns_app_1.namespace)
+                                       .translated('de')
+                                       .count()
+        )

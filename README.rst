@@ -37,6 +37,24 @@ Implementation step-guide
   Implementation can be completely empty as the schema is defined in the
   parent (abstract) model
 
+* Use apphooks managers in your model::
+
+    from aldryn_apphooks_config.managers import AppHookConfigManager
+
+    class Article(models.Model):
+        title = models.CharField()
+
+        objects = AppHookConfigManager()
+
+``AppHookConfigManager`` adds ``namespace`` method to manager and queryset::
+
+    Article.objects.namespace('foobar')
+
+There is also a proper queryset, the ``ApphooksConfigQueryset``. Parler
+integrated variants can be found in ``aldryn_apphooks_config.managers.parler``.
+Names are ``AppHookConfigTranslatableManager`` and
+``AppHookConfigTranslatableQueryset``.
+
 * Define a ConfigForm::
 
     from app_data import AppDataForm
@@ -92,7 +110,7 @@ Implementation step-guide
 
     class ArticleDetail(AppConfigMixin, DetailView):
         def get_queryset(self):
-            return Article.objects.filter(namespace__namespace=self.namespace)
+            return Article.objects.namespace(self.namespace)
 
   ``AppConfigMixin`` provides a complete support to namespaces, so the view
   is not required to set anything specific to support them; the following
