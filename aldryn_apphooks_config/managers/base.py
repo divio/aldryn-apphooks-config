@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.db.models import ForeignKey, Manager, QuerySet
-from parler.managers import TranslatableManager, TranslatableQuerySet
-
 
 
 def get_apphook_field_names(model):
     """
     Return all foreign key field names for a AppHookConfig based model
     """
-    from .models import AppHookConfig  # avoid circular dependencies
+    from ..models import AppHookConfig  # avoid circular dependencies
     fields = []
     for field in model._meta.fields:
         if (isinstance(field, ForeignKey)
@@ -17,7 +15,7 @@ def get_apphook_field_names(model):
     return [field.name for field in fields]
 
 
-class AppHookConfigQueryset(QuerySet):
+class AppHookConfigQuerySet(QuerySet):
 
     def namespace(self, namespace, to=None):
         """
@@ -51,10 +49,6 @@ class AppHookConfigQueryset(QuerySet):
         kwargs = {lookup: namespace}
         return self.filter(**kwargs)
 
-class AppHookConfigTranslatableQueryset(ApphooksConfigQueryset,
-                                         TranslatableQuerySet):
-    pass
-
 
 class AppHookConfigManager(Manager):
     """
@@ -63,18 +57,9 @@ class AppHookConfigManager(Manager):
     be used to filter objects by it namespace.
     """
     def get_queryset(self):
-        return AppHookConfigQueryset(self.model, using=self.db)
+        return AppHookConfigQuerySet(self.model, using=self.db)
 
     def namespace(self, namespace, to=None):
         return self.get_queryset().namespace(namespace, to=to)
 
 
-class AppHookConfigTranslatableManager(ApphooksConfigManager,
-                                        TranslatableManager):
-    """
-    Manager intended to use in TranslatableModels that has relations
-    to apphooks configs. Add the namespace method to manager and queryset
-    that should be used to filter objects by it namespace.
-    """
-    def get_queryset(self):
-        return AppHookConfigTranslatableQueryset(self.model, using=self.db)
