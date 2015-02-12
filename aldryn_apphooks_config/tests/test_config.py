@@ -164,9 +164,9 @@ class AppHookConfigTestCase(BaseTestCase):
                             slug='news_2_app_1_config2',
                             section=self.ns_app_1,
                             config=ans_config_2)
-        msg = ("'{}' has {} relations to an ApphookConfig model."
+        msg = ("'{0}' has {1} relations to an ApphookConfig model."
                " Please, specify which one to use in argument 'to'."
-               " Choices are: {}".format('News', '2', 'section, config'))
+               " Choices are: {2}".format('News', '2', 'section, config'))
         self.assertRaisesMessage(
             ValueError, msg, News.objects.namespace, ans_config_1.namespace
         )

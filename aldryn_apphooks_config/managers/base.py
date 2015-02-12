@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from django.db.models import ForeignKey, Manager, QuerySet
+from django.db.models.query import QuerySet
+from django.db.models import ForeignKey, Manager
 
 
 def get_apphook_field_names(model):
@@ -26,18 +27,18 @@ class QuerySetMixin(object):
         if not fields:
             raise ValueError(
                 "Can't find any relation to an ApphookConfig model "
-                "in {}".format(self.model.__name__)
+                "in {0}".format(self.model.__name__)
             )
         if to and to not in fields:
             raise ValueError(
                 "Can't find relation to ApphookConfig model named "
-                "'{}' in '{}'".format(to, self.model.__name__)
+                "'{0}' in '{1}'".format(to, self.model.__name__)
             )
         if len(fields) > 1 and to not in fields:
             raise ValueError(
-                "'{}' has {} relations to an ApphookConfig model."
+                "'{0}' has {1} relations to an ApphookConfig model."
                 " Please, specify which one to use in argument 'to'."
-                " Choices are: {}".format(
+                " Choices are: {2}".format(
                     self.model.__name__, len(fields), ", ".join(fields)
                 )
             )
@@ -45,7 +46,7 @@ class QuerySetMixin(object):
             if not to:
                 to = fields[0]
 
-        lookup = '{}__namespace'.format(to)
+        lookup = '{0}__namespace'.format(to)
         kwargs = {lookup: namespace}
         return self.filter(**kwargs)
 
