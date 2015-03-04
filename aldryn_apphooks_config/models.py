@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from app_data import AppDataField
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
@@ -71,8 +72,11 @@ class AppHookConfig(models.Model):
         return_value = None
         config = None
         if obj:
-            config = getattr(obj, config_attribute, False)
-        elif config_attribute in request.GET:
+            try:
+                config = getattr(obj, config_attribute, False)
+            except ObjectDoesNotExist:
+                pass
+        if not config and config_attribute in request.GET:
             try:
                 config = cls.objects.get(pk=request.GET[config_attribute])
             except cls.DoesNotExist:
