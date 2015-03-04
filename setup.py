@@ -37,7 +37,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'django-appdata>=0.1.3',
-        'django-cms>=3.0.90a1'
+        'django-cms>=3.0.11'
     ],
     extra_requires={
         'parler': 'django-parler>=1.2.1,<1.3'
