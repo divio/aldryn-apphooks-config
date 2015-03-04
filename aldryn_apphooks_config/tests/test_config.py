@@ -207,3 +207,35 @@ class AppHookConfigTestCase(BaseTestCase):
                                        .translated('de')
                                        .count()
         )
+
+    def test_get_config_data(self):
+        article = Article.objects.create(title='news_1_app_1_config1',
+                                         slug='news_1_app_1_config1',
+                                         section=self.ns_app_1)
+
+        # correct parameter passed by the request
+        request = self.get_page_request(self.page_3, self.user)
+        request.GET['section'] = self.ns_app_1.pk
+        retrieved = ExampleConfig.get_config_data(request, 'property', article, 'section', 'somevalue')
+        self.assertEqual(retrieved, self.ns_app_1.property)
+
+        # correct parameter passed by the request - no existing object
+        request = self.get_page_request(self.page_3, self.user)
+        request.GET['section'] = self.ns_app_1.pk
+        retrieved = ExampleConfig.get_config_data(request, 'property', Article(), 'section', 'somevalue')
+        self.assertEqual(retrieved, self.ns_app_1.property)
+
+        # no parameter from request - config retrieved form existing instance
+        request = self.get_page_request(self.page_3, self.user)
+        retrieved = ExampleConfig.get_config_data(request, 'property', article, 'section', 'somevalue')
+        self.assertEqual(retrieved, self.ns_app_1.property)
+
+        # no parameter from request - no existing instance - config set to default
+        request = self.get_page_request(self.page_3, self.user)
+        retrieved = ExampleConfig.get_config_data(request, 'property', Article(), 'section', 'somevalue')
+        self.assertEqual(retrieved, 'somevalue')
+
+        # no parameter from request - no object - config set to default
+        request = self.get_page_request(self.page_3, self.user)
+        retrieved = ExampleConfig.get_config_data(request, 'property', None, 'section', 'somevalue')
+        self.assertEqual(retrieved, 'somevalue')
