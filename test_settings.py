@@ -23,6 +23,9 @@ HELPER_SETTINGS = dict(
         'aldryn_apphooks_config.tests.utils.example',
         'parler'
     ],
+    MIGRATION_MODULES={
+        'djangocms_text_ckeditor': 'djangocms_text_ckeditor.migrations_django',
+    }
 )
 
 
