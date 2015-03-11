@@ -19,6 +19,7 @@ def namespace_url(context, view_name, *args, **kwargs):
     if not 'current_app' in kwargs:
         kwargs['current_app'] = namespace
 
-    return urlresolvers.reverse('%s:%s' % (config.namespace, view_name),
-                                args=args,
-                                kwargs=kwargs)
+    return urlresolvers.reverse(
+        '{0:s}:{1:s}'.format(config.namespace, view_name),
+        args=args,
+        kwargs=kwargs)
