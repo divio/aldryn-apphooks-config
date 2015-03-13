@@ -16,10 +16,14 @@ def namespace_url(context, view_name, *args, **kwargs):
     """
 
     namespace, config = get_app_instance(context['request'])
-    if not 'current_app' in kwargs:
-        kwargs['current_app'] = namespace
-
-    return urlresolvers.reverse(
-        '{0:s}:{1:s}'.format(config.namespace, view_name),
-        args=args,
-        kwargs=kwargs)
+    if kwargs:
+        return urlresolvers.reverse(
+            '{0:s}:{1:s}'.format(config.namespace, view_name),
+            kwargs=kwargs)
+    elif args:
+        return urlresolvers.reverse(
+            '{0:s}:{1:s}'.format(config.namespace, view_name),
+            args=args)
+    else:
+        return urlresolvers.reverse(
+            '{0:s}:{1:s}'.format(config.namespace, view_name))
