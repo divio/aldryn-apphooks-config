@@ -1,19 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db.models.query import QuerySet
-from django.db.models import ForeignKey, Manager
+from django.db.models import Manager
 
-
-def get_apphook_field_names(model):
-    """
-    Return all foreign key field names for a AppHookConfig based model
-    """
-    from ..models import AppHookConfig  # avoid circular dependencies
-    fields = []
-    for field in model._meta.fields:
-        if (isinstance(field, ForeignKey)
-                and issubclass(field.rel.to, AppHookConfig)):
-            fields.append(field)
-    return [field.name for field in fields]
+from ..utils import get_apphook_field_names
 
 
 class QuerySetMixin(object):
