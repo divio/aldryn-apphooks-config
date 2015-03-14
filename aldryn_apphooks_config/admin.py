@@ -88,7 +88,8 @@ class ModelAppHookConfig(object):
             return (_(self.app_config_selection_title),
                     {'fields': (self.app_config_attribute, ),
                      'description': _(self.app_config_selection_desc)}),
-        return self.fieldsets
+        else:
+            return super(ModelAppHookConfig, self).get_fieldsets(request, obj)
 
     def get_config_data(self, request, obj, name):
         """
@@ -105,13 +106,13 @@ class ModelAppHookConfig(object):
         if obj:
             try:
                 config = getattr(obj, self.app_config_attribute, False)
-            except ObjectDoesNotExist:
+            except ObjectDoesNotExist:  # pragma: no cover
                 pass
         if not config and self.app_config_attribute in request.GET:
             config_model = get_apphook_model(self.model, self.app_config_attribute)
             try:
                 config = config_model.objects.get(pk=request.GET[self.app_config_attribute])
-            except config_model.DoesNotExist:
+            except config_model.DoesNotExist:  # pragma: no cover
                 pass
         if config:
             return_value = getattr(config, name)
