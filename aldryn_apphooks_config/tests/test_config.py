@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+
+import os.path
+
+from django.template import Template, RequestContext
 from aldryn_apphooks_config.utils import get_app_instance
-from aldryn_apphooks_config.managers import AppHookConfigManager
 
 from cms import api
 from cms.apphook_pool import apphook_pool
@@ -305,3 +308,41 @@ class AppHookConfigTestCase(BaseTestCase):
         form = admin_instance.get_form(request, None)
         self.assertEqual(form.base_fields.keys(), ['title', 'slug', 'section', 'published'])
         self.assertEqual(form.base_fields['section'].initial, self.ns_app_1)
+
+    def test_admin(self):
+        from django.contrib import admin
+        admin.autodiscover()
+        self.ns_app_2.delete()
+        admin_instance = admin.site._registry[Article]
+
+        request = self.get_page_request(self.page_3, self.user)
+        response = admin_instance.add_view(request)
+        self.assertContains(response, '$(this).apphook_reload_admin')
+        self.assertContains(response, 'aldryn_apphooks_config')
+        self.assertContains(response, '<option value="1" selected="selected">%s</option>' % self.ns_app_1)
+
+    def test_templatetag(self):
+        article = Article.objects.create(title='news_1_app_1_config1',
+                                         slug='news_1_app_1_config1',
+                                         section=self.ns_app_1)
+
+        request = self.get_page_request(self.page_1, self.user)
+        context = RequestContext(request, {'object': article, 'current_app': self.ns_app_1.namespace})
+
+        template = Template('{% load apphooks_config_tags %}{% namespace_url "example_detail" object.slug %}')
+        response = template.render(context)
+        self.assertEqual(response, os.path.join(self.page_1.get_absolute_url(), article.slug, ''))
+
+        template = Template('{% load apphooks_config_tags %}{% namespace_url "example_detail" slug=object.slug %}')
+        response = template.render(context)
+        self.assertEqual(response, os.path.join(self.page_1.get_absolute_url(), article.slug, ''))
+
+        template = Template('{% load apphooks_config_tags %}{% namespace_url "example_list" %}')
+        response = template.render(context)
+        self.assertEqual(response, self.page_1.get_absolute_url())
+
+        request = self.get_page_request(self.page_2, self.user)
+        context = RequestContext(request, {'object': article, 'current_app': self.ns_app_2.namespace})
+        template = Template('{% load apphooks_config_tags %}{% namespace_url "example_list" %}')
+        response = template.render(context)
+        self.assertEqual(response, self.page_2.get_absolute_url())
