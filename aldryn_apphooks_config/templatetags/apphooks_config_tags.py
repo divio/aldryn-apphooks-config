@@ -14,16 +14,15 @@ def namespace_url(context, view_name, *args, **kwargs):
     """
     Returns an absolute URL matching given view with its parameters.
     """
-
     namespace, config = get_app_instance(context['request'])
     if kwargs:
         return urlresolvers.reverse(
-            '{0:s}:{1:s}'.format(config.namespace, view_name),
-            kwargs=kwargs)
+            'example:{0:s}'.format(view_name),
+            kwargs=kwargs, current_app=namespace)
     elif args:
         return urlresolvers.reverse(
-            '{0:s}:{1:s}'.format(config.namespace, view_name),
-            args=args)
+            'example:{0:s}'.format(view_name),
+            args=args, current_app=namespace)
     else:
         return urlresolvers.reverse(
-            '{0:s}:{1:s}'.format(config.namespace, view_name))
+            'example:{0:s}'.format(view_name), current_app=namespace)
