@@ -49,3 +49,14 @@ def get_apphook_field_names(model):
                 and issubclass(field.rel.to, AppHookConfig)):
             fields.append(field)
     return [field.name for field in fields]
+
+
+def get_apphook_model(model, app_config_attribute):
+    """
+    Return the AppHookConfig model for the provided main model
+
+    :param model: Main model
+    :param app_config_attribute: Fieldname of the app_config
+    :return: app_config model
+    """
+    return model._meta.get_field_by_name(app_config_attribute)[0].rel.to
