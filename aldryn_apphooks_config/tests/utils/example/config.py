@@ -19,6 +19,7 @@ class AnotherExampleConfig(AppHookConfig):
 
 class ExampleConfigForm(AppDataForm):
     property = forms.CharField()
+    published_default = forms.BooleanField(initial=True)
 setup_config(ExampleConfigForm, ExampleConfig)
 
 
