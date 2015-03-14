@@ -281,21 +281,21 @@ class AppHookConfigTestCase(BaseTestCase):
         # no object is set, no parameter passed through the request, two namespaces
         request = self.get_page_request(self.page_3, self.user)
         form = admin_instance.get_form(request, None)
-        self.assertEqual(form.base_fields.keys(), ['section'])
+        self.assertEqual(list(form.base_fields.keys()), ['section'])
         self.assertEqual(form.base_fields['section'].initial, None)
 
         # object is set, normal form is used
         request = self.get_page_request(self.page_3, self.user)
         request.GET['section'] = self.ns_app_1.pk
         form = admin_instance.get_form(request, article)
-        self.assertEqual(form.base_fields.keys(), ['title', 'slug', 'section', 'published'])
+        self.assertEqual(list(form.base_fields.keys()), ['title', 'slug', 'section', 'published'])
         self.assertEqual(form.base_fields['section'].initial, None)
 
         # no object is set, parameter passed through the request
         request = self.get_page_request(self.page_3, self.user)
         request.GET['section'] = self.ns_app_1.pk
         form = admin_instance.get_form(request, None)
-        self.assertEqual(form.base_fields.keys(), ['title', 'slug', 'section', 'published'])
+        self.assertEqual(list(form.base_fields.keys()), ['title', 'slug', 'section', 'published'])
         self.assertEqual(form.base_fields['section'].initial, None)
 
         self.ns_app_2.delete()
@@ -306,7 +306,7 @@ class AppHookConfigTestCase(BaseTestCase):
         # no object is set, no parameter passed through the request, one namespace
         request = self.get_page_request(self.page_3, self.user)
         form = admin_instance.get_form(request, None)
-        self.assertEqual(form.base_fields.keys(), ['title', 'slug', 'section', 'published'])
+        self.assertEqual(list(form.base_fields.keys()), ['title', 'slug', 'section', 'published'])
         self.assertEqual(form.base_fields['section'].initial, self.ns_app_1)
 
     def test_admin(self):
