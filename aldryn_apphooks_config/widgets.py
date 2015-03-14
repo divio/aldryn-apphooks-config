@@ -3,6 +3,7 @@ from django import forms
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
+
 class AppHookConfigWidget(forms.Select):
 
     class Media:
