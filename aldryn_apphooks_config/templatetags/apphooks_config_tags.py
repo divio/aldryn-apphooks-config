@@ -27,8 +27,6 @@ def namespace_url(context, view_name, *args, **kwargs):
     if namespace:
         namespace += ":"
 
-    print("Using namespace [{0}]".format(namespace))
-
     if kwargs:
         return urlresolvers.reverse(
             '{0:s}{1:s}'.format(namespace, view_name),
