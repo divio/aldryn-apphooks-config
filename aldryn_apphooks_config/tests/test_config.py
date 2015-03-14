@@ -209,33 +209,99 @@ class AppHookConfigTestCase(BaseTestCase):
         )
 
     def test_get_config_data(self):
+        from django.contrib import admin
+
         article = Article.objects.create(title='news_1_app_1_config1',
                                          slug='news_1_app_1_config1',
                                          section=self.ns_app_1)
 
+        admin.autodiscover()
+
+        admin_instance = admin.site._registry[Article]
+
         # correct parameter passed by the request
         request = self.get_page_request(self.page_3, self.user)
         request.GET['section'] = self.ns_app_1.pk
-        retrieved = ExampleConfig.get_config_data(request, 'property', article, 'section', 'somevalue')
+        retrieved = admin_instance.get_config_data(request, article, 'property')
         self.assertEqual(retrieved, self.ns_app_1.property)
 
         # correct parameter passed by the request - no existing object
         request = self.get_page_request(self.page_3, self.user)
         request.GET['section'] = self.ns_app_1.pk
-        retrieved = ExampleConfig.get_config_data(request, 'property', Article(), 'section', 'somevalue')
+        retrieved = admin_instance.get_config_data(request, Article(), 'property')
         self.assertEqual(retrieved, self.ns_app_1.property)
 
         # no parameter from request - config retrieved form existing instance
         request = self.get_page_request(self.page_3, self.user)
-        retrieved = ExampleConfig.get_config_data(request, 'property', article, 'section', 'somevalue')
+        retrieved = admin_instance.get_config_data(request, article, 'property')
         self.assertEqual(retrieved, self.ns_app_1.property)
 
-        # no parameter from request - no existing instance - config set to default
-        request = self.get_page_request(self.page_3, self.user)
-        retrieved = ExampleConfig.get_config_data(request, 'property', Article(), 'section', 'somevalue')
-        self.assertEqual(retrieved, 'somevalue')
+    def test_config_select(self):
+        from django.contrib import admin
 
-        # no parameter from request - no object - config set to default
+        article = Article.objects.create(title='news_1_app_1_config1',
+                                         slug='news_1_app_1_config1',
+                                         section=self.ns_app_1)
+
+        admin.autodiscover()
+
+        admin_instance = admin.site._registry[Article]
+
+        # no object is set, no parameter passed through the request, two namespaces
         request = self.get_page_request(self.page_3, self.user)
-        retrieved = ExampleConfig.get_config_data(request, 'property', None, 'section', 'somevalue')
-        self.assertEqual(retrieved, 'somevalue')
+        value = admin_instance._app_config_select(request, None)
+        self.assertEqual(value, None)
+
+        # object is set, no parameter passed through the request, two namespaces
+        request = self.get_page_request(self.page_3, self.user)
+        value = admin_instance._app_config_select(request, article)
+        self.assertEqual(value, False)
+
+        self.ns_app_2.delete()
+
+        # no object is set, no parameter passed through the request, one namespace
+        request = self.get_page_request(self.page_3, self.user)
+        value = admin_instance._app_config_select(request, None)
+        self.assertEqual(value, self.ns_app_1)
+
+    def test_get_config_form(self):
+        from django.contrib import admin
+
+        article = Article.objects.create(title='news_1_app_1_config1',
+                                         slug='news_1_app_1_config1',
+                                         section=self.ns_app_1)
+
+        admin.autodiscover()
+
+        admin_instance = admin.site._registry[Article]
+
+        # no object is set, no parameter passed through the request, two namespaces
+        request = self.get_page_request(self.page_3, self.user)
+        form = admin_instance.get_form(request, None)
+        self.assertEqual(form.base_fields.keys(), ['section'])
+        self.assertEqual(form.base_fields['section'].initial, None)
+
+        # object is set, normal form is used
+        request = self.get_page_request(self.page_3, self.user)
+        request.GET['section'] = self.ns_app_1.pk
+        form = admin_instance.get_form(request, article)
+        self.assertEqual(form.base_fields.keys(), ['title', 'slug', 'section', 'published'])
+        self.assertEqual(form.base_fields['section'].initial, None)
+
+        # no object is set, parameter passed through the request
+        request = self.get_page_request(self.page_3, self.user)
+        request.GET['section'] = self.ns_app_1.pk
+        form = admin_instance.get_form(request, None)
+        self.assertEqual(form.base_fields.keys(), ['title', 'slug', 'section', 'published'])
+        self.assertEqual(form.base_fields['section'].initial, None)
+
+        self.ns_app_2.delete()
+        request = self.get_page_request(self.page_3, self.user)
+        app_config_default = admin_instance._app_config_select(request, None)
+        self.assertEqual(app_config_default, self.ns_app_1)
+
+        # no object is set, no parameter passed through the request, one namespace
+        request = self.get_page_request(self.page_3, self.user)
+        form = admin_instance.get_form(request, None)
+        self.assertEqual(form.base_fields.keys(), ['title', 'slug', 'section', 'published'])
+        self.assertEqual(form.base_fields['section'].initial, self.ns_app_1)

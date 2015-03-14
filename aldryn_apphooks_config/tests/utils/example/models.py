@@ -16,12 +16,14 @@ class Article(models.Model):
     title = models.CharField(_('title'), max_length=234)
     slug = models.SlugField()
     section = AppHookConfigField(ExampleConfig, verbose_name=_('section'))
+    published = models.BooleanField(default=True)
 
     objects = AppHookConfigManager()
 
 
 class News(Article):
     config = AppHookConfigField(AnotherExampleConfig, verbose_name=_('config'))
+
     objects = AppHookConfigManager()
 
 
