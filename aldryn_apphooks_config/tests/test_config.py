@@ -346,3 +346,15 @@ class AppHookConfigTestCase(BaseTestCase):
         template = Template('{% load apphooks_config_tags %}{% namespace_url "example_list" %}')
         response = template.render(context)
         self.assertEqual(response, self.page_2.get_absolute_url())
+
+        request = self.get_page_request(self.page_2, self.user)
+        context = RequestContext(request, {'object': article})
+        template = Template('{% load apphooks_config_tags %}{% namespace_url "example_list" namespace="app2" %}')
+        response = template.render(context)
+        self.assertEqual(response, self.page_2.get_absolute_url())
+
+        request = self.get_page_request(self.page_3, self.user)
+        context = RequestContext(request, {'object': article})
+        template = Template('{% load apphooks_config_tags %}{% namespace_url "example:example_list" %}')
+        response = template.render(context)
+        self.assertEqual(response, self.page_2.get_absolute_url())

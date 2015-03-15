@@ -18,23 +18,27 @@ def namespace_url(context, view_name, *args, **kwargs):
     object for the app_config's namespace. If there is still no namespace found,
     this tag will act like the normal {% url ... %} tag.
     """
-
+    app_name = ''
+    config = None
     namespace = kwargs.pop('namespace', None)
 
     if not namespace:
-        namespace, __ = get_app_instance(context['request'])
+        namespace, config = get_app_instance(context['request'])
 
-    if namespace:
-        namespace += ":"
+    if config:
+        app_name = config.cmsapp.app_name + ':'
+    elif namespace:
+        app_name = namespace + ':'
 
     if kwargs:
         return urlresolvers.reverse(
-            '{0:s}{1:s}'.format(namespace, view_name),
-            kwargs=kwargs)
+            '{0:s}{1:s}'.format(app_name, view_name),
+            kwargs=kwargs, current_app=namespace)
     elif args:
         return urlresolvers.reverse(
-            '{0:s}{1:s}'.format(namespace, view_name),
-            args=args)
+            '{0:s}{1:s}'.format(app_name, view_name),
+            args=args, current_app=namespace)
     else:
         return urlresolvers.reverse(
-            '{0:s}{1:s}'.format(namespace, view_name))
+            '{0:s}{1:s}'.format(app_name, view_name),
+            current_app=namespace)
