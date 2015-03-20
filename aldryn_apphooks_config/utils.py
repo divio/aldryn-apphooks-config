@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from app_data import AppDataContainer, app_registry
+from django.db.models import ForeignKey
 from cms.apphook_pool import apphook_pool
 from django.core.urlresolvers import resolve, Resolver404
 
@@ -35,3 +36,27 @@ def setup_config(form_class, config_model):
     :return:
     """
     app_registry.register('config', AppDataContainer.from_form(form_class), config_model)
+
+
+def get_apphook_field_names(model):
+    """
+    Return all foreign key field names for a AppHookConfig based model
+    """
+    from .models import AppHookConfig  # avoid circular dependencies
+    fields = []
+    for field in model._meta.fields:
+        if (isinstance(field, ForeignKey)
+                and issubclass(field.rel.to, AppHookConfig)):
+            fields.append(field)
+    return [field.name for field in fields]
+
+
+def get_apphook_model(model, app_config_attribute):
+    """
+    Return the AppHookConfig model for the provided main model
+
+    :param model: Main model
+    :param app_config_attribute: Fieldname of the app_config
+    :return: app_config model
+    """
+    return model._meta.get_field_by_name(app_config_attribute)[0].rel.to

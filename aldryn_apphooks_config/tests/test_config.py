@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+
+import os.path
+
+from django.template import Template, RequestContext
 from aldryn_apphooks_config.utils import get_app_instance
-from aldryn_apphooks_config.managers import AppHookConfigManager
 
 from cms import api
 from cms.apphook_pool import apphook_pool
@@ -207,3 +210,139 @@ class AppHookConfigTestCase(BaseTestCase):
                                        .translated('de')
                                        .count()
         )
+
+    def test_get_config_data(self):
+        from django.contrib import admin
+
+        article = Article.objects.create(title='news_1_app_1_config1',
+                                         slug='news_1_app_1_config1',
+                                         section=self.ns_app_1)
+
+        admin.autodiscover()
+
+        admin_instance = admin.site._registry[Article]
+
+        # correct parameter passed by the request
+        request = self.get_page_request(self.page_3, self.user)
+        request.GET['section'] = self.ns_app_1.pk
+        retrieved = admin_instance.get_config_data(request, article, 'property')
+        self.assertEqual(retrieved, self.ns_app_1.property)
+
+        # correct parameter passed by the request - no existing object
+        request = self.get_page_request(self.page_3, self.user)
+        request.GET['section'] = self.ns_app_1.pk
+        retrieved = admin_instance.get_config_data(request, Article(), 'property')
+        self.assertEqual(retrieved, self.ns_app_1.property)
+
+        # no parameter from request - config retrieved form existing instance
+        request = self.get_page_request(self.page_3, self.user)
+        retrieved = admin_instance.get_config_data(request, article, 'property')
+        self.assertEqual(retrieved, self.ns_app_1.property)
+
+    def test_config_select(self):
+        from django.contrib import admin
+
+        article = Article.objects.create(title='news_1_app_1_config1',
+                                         slug='news_1_app_1_config1',
+                                         section=self.ns_app_1)
+
+        admin.autodiscover()
+
+        admin_instance = admin.site._registry[Article]
+
+        # no object is set, no parameter passed through the request, two namespaces
+        request = self.get_page_request(self.page_3, self.user)
+        value = admin_instance._app_config_select(request, None)
+        self.assertEqual(value, None)
+
+        # object is set, no parameter passed through the request, two namespaces
+        request = self.get_page_request(self.page_3, self.user)
+        value = admin_instance._app_config_select(request, article)
+        self.assertEqual(value, False)
+
+        self.ns_app_2.delete()
+
+        # no object is set, no parameter passed through the request, one namespace
+        request = self.get_page_request(self.page_3, self.user)
+        value = admin_instance._app_config_select(request, None)
+        self.assertEqual(value, self.ns_app_1)
+
+    def test_get_config_form(self):
+        from django.contrib import admin
+
+        article = Article.objects.create(title='news_1_app_1_config1',
+                                         slug='news_1_app_1_config1',
+                                         section=self.ns_app_1)
+
+        admin.autodiscover()
+
+        admin_instance = admin.site._registry[Article]
+
+        # no object is set, no parameter passed through the request, two namespaces
+        request = self.get_page_request(self.page_3, self.user)
+        form = admin_instance.get_form(request, None)
+        self.assertEqual(list(form.base_fields.keys()), ['section'])
+        self.assertEqual(form.base_fields['section'].initial, None)
+
+        # object is set, normal form is used
+        request = self.get_page_request(self.page_3, self.user)
+        request.GET['section'] = self.ns_app_1.pk
+        form = admin_instance.get_form(request, article)
+        self.assertEqual(list(form.base_fields.keys()), ['title', 'slug', 'section', 'published'])
+        self.assertEqual(form.base_fields['section'].initial, None)
+
+        # no object is set, parameter passed through the request
+        request = self.get_page_request(self.page_3, self.user)
+        request.GET['section'] = self.ns_app_1.pk
+        form = admin_instance.get_form(request, None)
+        self.assertEqual(list(form.base_fields.keys()), ['title', 'slug', 'section', 'published'])
+        self.assertEqual(form.base_fields['section'].initial, None)
+
+        self.ns_app_2.delete()
+        request = self.get_page_request(self.page_3, self.user)
+        app_config_default = admin_instance._app_config_select(request, None)
+        self.assertEqual(app_config_default, self.ns_app_1)
+
+        # no object is set, no parameter passed through the request, one namespace
+        request = self.get_page_request(self.page_3, self.user)
+        form = admin_instance.get_form(request, None)
+        self.assertEqual(list(form.base_fields.keys()), ['title', 'slug', 'section', 'published'])
+        self.assertEqual(form.base_fields['section'].initial, self.ns_app_1)
+
+    def test_admin(self):
+        from django.contrib import admin
+        admin.autodiscover()
+        self.ns_app_2.delete()
+        admin_instance = admin.site._registry[Article]
+
+        request = self.get_page_request(self.page_3, self.user)
+        response = admin_instance.add_view(request)
+        self.assertContains(response, '$(this).apphook_reload_admin')
+        self.assertContains(response, 'aldryn_apphooks_config')
+        self.assertContains(response, '<option value="1" selected="selected">%s</option>' % self.ns_app_1)
+
+    def test_templatetag(self):
+        article = Article.objects.create(title='news_1_app_1_config1',
+                                         slug='news_1_app_1_config1',
+                                         section=self.ns_app_1)
+
+        request = self.get_page_request(self.page_1, self.user)
+        context = RequestContext(request, {'object': article, 'current_app': self.ns_app_1.namespace})
+
+        template = Template('{% load apphooks_config_tags %}{% namespace_url "example_detail" object.slug %}')
+        response = template.render(context)
+        self.assertEqual(response, os.path.join(self.page_1.get_absolute_url(), article.slug, ''))
+
+        template = Template('{% load apphooks_config_tags %}{% namespace_url "example_detail" slug=object.slug %}')
+        response = template.render(context)
+        self.assertEqual(response, os.path.join(self.page_1.get_absolute_url(), article.slug, ''))
+
+        template = Template('{% load apphooks_config_tags %}{% namespace_url "example_list" %}')
+        response = template.render(context)
+        self.assertEqual(response, self.page_1.get_absolute_url())
+
+        request = self.get_page_request(self.page_2, self.user)
+        context = RequestContext(request, {'object': article, 'current_app': self.ns_app_2.namespace})
+        template = Template('{% load apphooks_config_tags %}{% namespace_url "example_list" %}')
+        response = template.render(context)
+        self.assertEqual(response, self.page_2.get_absolute_url())

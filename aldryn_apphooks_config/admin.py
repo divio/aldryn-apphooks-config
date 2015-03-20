@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 from app_data.admin import AppDataModelAdmin
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.translation import ugettext_lazy as _
+
+from .utils import get_apphook_model
 
 
 class BaseAppHookConfig(AppDataModelAdmin):
@@ -24,3 +28,114 @@ class BaseAppHookConfig(AppDataModelAdmin):
 
     def get_config_fields(self):
         return ()
+
+
+class ModelAppHookConfig(object):
+    app_config_attribute = 'app_config'
+    app_config_selection_title = u'Select app config'
+    app_config_selection_desc = u'Select the app config for the new object'
+    app_config_values = {}
+
+    def _app_config_select(self, request, obj):
+        """
+        Return the select value for apphook configs
+        :param request: request object
+        :param obj: current object
+        :return: None if apphook config is present in the object or in the request, False if
+                 no preselected value is available (more than one or no apphook config is present),
+                 apphook config instance if exactly one apphook config is defined
+        """
+        if not obj and not request.GET.get(self.app_config_attribute, False):
+            config_model = get_apphook_model(self.model, self.app_config_attribute)
+            if config_model.objects.count() == 1:
+                return config_model.objects.first()
+            return None
+        return False
+
+    def _set_config_defaults(self, request, form, obj=None):
+        """
+        Cycle through app_config_values and sets the form value according to the
+        options in the current apphook config.
+
+        self.app_config_values is a dictionary containing config options as keys, form fields as
+        values::
+
+            app_config_values = {
+                'apphook_config': 'form_field',
+                ...
+            }
+
+        :param request: request object
+        :param form: model form for the current model
+        :param obj: current object
+        :return: form with defaults set
+        """
+        for config_option, field in self.app_config_values.items():
+            if field in form.base_fields:
+                form.base_fields[field].initial = self.get_config_data(request, obj, config_option)
+        return form
+
+    def get_fieldsets(self, request, obj=None):
+        """
+        If the apphook config must be selected first, returns a fieldset with just the
+         app config field and help text
+        :param request:
+        :param obj:
+        :return:
+        """
+        app_config_default = self._app_config_select(request, obj)
+        if app_config_default is None:
+            return (_(self.app_config_selection_title),
+                    {'fields': (self.app_config_attribute, ),
+                     'description': _(self.app_config_selection_desc)}),
+        else:
+            return super(ModelAppHookConfig, self).get_fieldsets(request, obj)
+
+    def get_config_data(self, request, obj, name):
+        """
+        Method that retrieves a configuration option for a specific AppHookConfig instance
+
+        :param request: the request object
+        :param obj: the model instance
+        :param name: name of the config option as defined in the config form
+
+        :return value: config value or None if no app config is found
+        """
+        return_value = None
+        config = None
+        if obj:
+            try:
+                config = getattr(obj, self.app_config_attribute, False)
+            except ObjectDoesNotExist:  # pragma: no cover
+                pass
+        if not config and self.app_config_attribute in request.GET:
+            config_model = get_apphook_model(self.model, self.app_config_attribute)
+            try:
+                config = config_model.objects.get(pk=request.GET[self.app_config_attribute])
+            except config_model.DoesNotExist:  # pragma: no cover
+                pass
+        if config:
+            return_value = getattr(config, name)
+        return return_value
+
+    def get_form(self, request, obj=None, **kwargs):
+        """
+        Provides a flexible way to get the right form according to the context
+
+        For the add view it checks whether the app_config is set; if not, a special form
+        to select the namespace is shown, which is reloaded after namespace selection.
+        If only one namespace exists, the current is selected and the normal form
+        is used.
+        """
+        form = super(ModelAppHookConfig, self).get_form(request, obj, **kwargs)
+        app_config_default = self._app_config_select(request, obj)
+        if app_config_default:
+            form.base_fields[self.app_config_attribute].initial = app_config_default
+            return form
+        elif app_config_default is None:
+            class InitialForm(form):
+                class Meta(form.Meta):
+                    fields = (self.app_config_attribute,)
+            return InitialForm
+        else:
+            return self._set_config_defaults(request, form, obj)
