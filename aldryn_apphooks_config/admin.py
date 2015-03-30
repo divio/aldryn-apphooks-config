@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import copy
 from app_data.admin import AppDataModelAdmin
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
@@ -39,17 +40,24 @@ class ModelAppHookConfig(object):
     def _app_config_select(self, request, obj):
         """
         Return the select value for apphook configs
+
         :param request: request object
         :param obj: current object
-        :return: None if apphook config is present in the object or in the request, False if
-                 no preselected value is available (more than one or no apphook config is present),
-                 apphook config instance if exactly one apphook config is defined
+        :return: False if no preselected value is available (more than one or no apphook
+                 config is present), apphook config instance if exactly one apphook
+                 config is defined or apphook config defined in the request or in the current
+                 object, False otherwise
         """
         if not obj and not request.GET.get(self.app_config_attribute, False):
             config_model = get_apphook_model(self.model, self.app_config_attribute)
             if config_model.objects.count() == 1:
                 return config_model.objects.first()
             return None
+        elif obj and getattr(obj, self.app_config_attribute, False):
+            return getattr(obj, self.app_config_attribute)
+        elif request.GET.get(self.app_config_attribute, False):
+            config_model = get_apphook_model(self.model, self.app_config_attribute)
+            return config_model.objects.get(pk=int(request.GET.get(self.app_config_attribute, False)))
         return False
 
     def _set_config_defaults(self, request, form, obj=None):
@@ -131,11 +139,13 @@ class ModelAppHookConfig(object):
         app_config_default = self._app_config_select(request, obj)
         if app_config_default:
             form.base_fields[self.app_config_attribute].initial = app_config_default
-            return form
+            get = copy.copy(request.GET)
+            get[self.app_config_attribute] = app_config_default.pk
+            request.GET = get
         elif app_config_default is None:
             class InitialForm(form):
                 class Meta(form.Meta):
                     fields = (self.app_config_attribute,)
-            return InitialForm
-        else:
-            return self._set_config_defaults(request, form, obj)
+            form = InitialForm
+        form = self._set_config_defaults(request, form, obj)
+        return form
