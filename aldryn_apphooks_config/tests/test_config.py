@@ -31,9 +31,11 @@ class AppHookConfigTestCase(BaseTestCase):
 
         self.ns_app_1 = ExampleConfig.objects.create(namespace='app1')
         self.ns_app_1.app_data.config.property = 'app1_property'
+        self.ns_app_1.app_data.config.published_default = False
         self.ns_app_1.save()
         self.ns_app_2 = ExampleConfig.objects.create(namespace='app2')
         self.ns_app_2.app_data.config.property = 'app2_property'
+        self.ns_app_2.app_data.config.published_default = True
         self.ns_app_2.save()
 
         self.page_1 = api.create_page(
@@ -258,7 +260,7 @@ class AppHookConfigTestCase(BaseTestCase):
         # object is set, no parameter passed through the request, two namespaces
         request = self.get_page_request(self.page_3, self.user)
         value = admin_instance._app_config_select(request, article)
-        self.assertEqual(value, False)
+        self.assertEqual(value, article.section)
 
         self.ns_app_2.delete()
 
@@ -289,14 +291,14 @@ class AppHookConfigTestCase(BaseTestCase):
         request.GET['section'] = self.ns_app_1.pk
         form = admin_instance.get_form(request, article)
         self.assertEqual(list(form.base_fields.keys()), ['title', 'slug', 'section', 'published'])
-        self.assertEqual(form.base_fields['section'].initial, None)
+        self.assertEqual(form.base_fields['section'].initial, self.ns_app_1)
 
         # no object is set, parameter passed through the request
         request = self.get_page_request(self.page_3, self.user)
         request.GET['section'] = self.ns_app_1.pk
         form = admin_instance.get_form(request, None)
         self.assertEqual(list(form.base_fields.keys()), ['title', 'slug', 'section', 'published'])
-        self.assertEqual(form.base_fields['section'].initial, None)
+        self.assertEqual(form.base_fields['section'].initial, self.ns_app_1)
 
         self.ns_app_2.delete()
         request = self.get_page_request(self.page_3, self.user)
@@ -312,14 +314,31 @@ class AppHookConfigTestCase(BaseTestCase):
     def test_admin(self):
         from django.contrib import admin
         admin.autodiscover()
-        self.ns_app_2.delete()
+
         admin_instance = admin.site._registry[Article]
 
+        # testing behavior when more than 1 namespace instance exists - the selection form
+        # should be shown
         request = self.get_page_request(self.page_3, self.user)
         response = admin_instance.add_view(request)
         self.assertContains(response, '$(this).apphook_reload_admin')
         self.assertContains(response, 'aldryn_apphooks_config')
+        self.assertContains(response, '<option value="1">%s</option>' % self.ns_app_1)
+        self.assertContains(response, '<option value="2">%s</option>' % self.ns_app_2)
+        self.assertContains(response, '<h2>Select app config</h2>')
+
+        # only one namespace instance exists, the normal changeform is used
+        self.ns_app_2.delete()
+        response = admin_instance.add_view(request)
+        self.assertContains(response, '$(this).apphook_reload_admin')
+        self.assertContains(response, 'aldryn_apphooks_config')
         self.assertContains(response, '<option value="1" selected="selected">%s</option>' % self.ns_app_1)
+        self.assertContains(response, '<input id="id_published"')
+
+        self.ns_app_1.app_data.config.published_default = True
+        self.ns_app_1.save()
+        response = admin_instance.add_view(request)
+        self.assertContains(response, '<input checked="checked" id="id_published"')
 
     def test_templatetag(self):
         article = Article.objects.create(title='news_1_app_1_config1',
