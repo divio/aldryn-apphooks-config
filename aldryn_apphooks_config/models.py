@@ -12,7 +12,8 @@ class AppHookConfig(models.Model):
     concrete model
     """
     type = models.CharField(_('type'), max_length=100)
-    namespace = models.CharField(_(u'instance namespace'), default=None, max_length=100)
+    namespace = models.CharField(
+        _(u'instance namespace'), default=None, max_length=100, unique=True)
     app_data = AppDataField()
 
     cmsapp = None
