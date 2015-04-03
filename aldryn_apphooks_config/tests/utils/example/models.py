@@ -9,14 +9,14 @@ from aldryn_apphooks_config.managers.parler import (
 )
 from parler.models import TranslatableModel, TranslatedFields
 
-from .config import ExampleConfig, AnotherExampleConfig
+from .cms_appconfig import ExampleConfig, AnotherExampleConfig
 
 
 class Article(models.Model):
     title = models.CharField(_('title'), max_length=234)
     slug = models.SlugField()
     section = AppHookConfigField(ExampleConfig, verbose_name=_('section'))
-    published = models.BooleanField(default=True)
+    published = models.BooleanField(default=True, blank=True)
 
     objects = AppHookConfigManager()
 

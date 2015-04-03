@@ -12,7 +12,6 @@ sudo: false
 
 env:
   matrix:
-  - DJANGO='django15'
   - DJANGO='django16'
   - DJANGO='django17'
 

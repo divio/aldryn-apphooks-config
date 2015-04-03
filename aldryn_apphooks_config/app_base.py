@@ -19,6 +19,6 @@ class CMSConfigApp(CMSApp):
         try:
             return reverse('admin:%s_%s_add' % (self.app_config._meta.app_label,
                                                 self.app_config._meta.model_name))
-        except AttributeError:  #NOQA
+        except AttributeError:  # pragma: no cover
             return reverse('admin:%s_%s_add' % (self.app_config._meta.app_label,
                                                 self.app_config._meta.module_name))
