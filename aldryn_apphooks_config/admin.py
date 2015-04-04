@@ -92,7 +92,7 @@ class ModelAppHookConfig(object):
         :return:
         """
         app_config_default = self._app_config_select(request, obj)
-        if app_config_default is None:
+        if app_config_default is None and request.method == 'GET':
             return (_(self.app_config_selection_title),
                     {'fields': (self.app_config_attribute, ),
                      'description': _(self.app_config_selection_desc)}),
@@ -142,7 +142,7 @@ class ModelAppHookConfig(object):
             get = copy.copy(request.GET)
             get[self.app_config_attribute] = app_config_default.pk
             request.GET = get
-        elif app_config_default is None:
+        elif app_config_default is None and request.method == 'GET':
             class InitialForm(form):
                 class Meta(form.Meta):
                     fields = (self.app_config_attribute,)
