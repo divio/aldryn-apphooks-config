@@ -6,6 +6,14 @@ from django.utils.translation import ugettext_lazy as _
 from .widgets import AppHookConfigWidget
 
 
+class AppHookConfigFormField(forms.ModelChoiceField):
+
+    def __init__(self, queryset, empty_label="---------", required=True,
+            widget=AppHookConfigWidget, *args, **kwargs):
+        super(AppHookConfigFormField, self).__init__(queryset, empty_label, 
+            required, widget, *args, **kwargs)
+
+
 class AppHookConfigField(models.ForeignKey):
 
     def __init__(self, *args, **kwargs):
@@ -13,7 +21,5 @@ class AppHookConfigField(models.ForeignKey):
         super(AppHookConfigField, self).__init__(*args, **kwargs)
 
     def formfield(self, **kwargs):
-        class AppHookConfigFormField(forms.ModelChoiceField):
-            widget = AppHookConfigWidget
         kwargs.update({'form_class': AppHookConfigFormField})
         return super(AppHookConfigField, self).formfield(**kwargs)
