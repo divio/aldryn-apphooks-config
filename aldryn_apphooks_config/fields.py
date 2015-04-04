@@ -8,10 +8,10 @@ from .widgets import AppHookConfigWidget
 
 class AppHookConfigFormField(forms.ModelChoiceField):
 
-    def __init__(self, queryset, empty_label="---------", required=True,
-            widget=AppHookConfigWidget, *args, **kwargs):
-        super(AppHookConfigFormField, self).__init__(queryset, empty_label, 
-            required, widget, *args, **kwargs)
+    def __init__(self, queryset, empty_label="---------", cache_choices=False,
+            required=True, widget=AppHookConfigWidget, *args, **kwargs):
+        super(AppHookConfigFormField, self).__init__(queryset, empty_label,
+            cache_choices, required, widget, *args, **kwargs)
 
 
 class AppHookConfigField(models.ForeignKey):
