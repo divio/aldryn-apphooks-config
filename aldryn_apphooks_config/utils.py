@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-from app_data import AppDataContainer, app_registry
+
+from django.core.urlresolvers import resolve, Resolver404
 from django.db.models import ForeignKey
 from django.utils.translation import override, get_language_from_request
+
+from app_data import AppDataContainer, app_registry
 from cms.apphook_pool import apphook_pool
-from django.core.urlresolvers import resolve, Resolver404
 
 
 def get_app_instance(request):
