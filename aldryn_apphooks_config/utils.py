@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
-from app_data import AppDataContainer, app_registry
-from django.db.models import ForeignKey
-from cms.apphook_pool import apphook_pool
+
 from django.core.urlresolvers import resolve, Resolver404
+from django.db.models import ForeignKey
+from django.utils.translation import override, get_language_from_request
+
+from app_data import AppDataContainer, app_registry
+from cms.apphook_pool import apphook_pool
 
 
 def get_app_instance(request):
@@ -19,8 +22,8 @@ def get_app_instance(request):
     if app and app.app_config:
         try:
             config = None
-            namespace = resolve(request.path).namespace
-            if app and app.app_config:
+            with override(get_language_from_request(request, check_path=True)):
+                namespace = resolve(request.path).namespace
                 config = app.get_config(namespace)
             return namespace, config
         except Resolver404:
