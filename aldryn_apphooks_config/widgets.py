@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.utils.html import mark_safe
-from django.utils.translation import ugettext_lazy as _
 
 
 class AppHookConfigWidget(forms.Select):
@@ -16,9 +15,14 @@ class AppHookConfigWidget(forms.Select):
         <script>
         (function($) {
             $(document).ready(function () {
-                $('#%(id)s').change(function () {
-                    $(this).apphook_reload_admin('%(name)s', $("option:selected",$(this)).val());
-                });
+                var sel = $('#%(id)s');
+                if (!sel.val()) {
+                    sel.change(function () {
+                        $(this).apphook_reload_admin(
+                            '%(name)s', $("option:selected",$(this)).val()
+                        );
+                    });
+                }
             });
         })(django.jQuery);
         </script>
