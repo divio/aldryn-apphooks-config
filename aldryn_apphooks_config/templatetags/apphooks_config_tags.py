@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
+from functools import partial
+
 from django import template
 from django.core import urlresolvers
 
@@ -27,14 +31,11 @@ def namespace_url(context, view_name, *args, **kwargs):
     if namespace:
         namespace += ":"
 
+    reverse = partial(urlresolvers.reverse, '{0:s}{1:s}'.format(namespace, view_name))
+
     if kwargs:
-        return urlresolvers.reverse(
-            '{0:s}{1:s}'.format(namespace, view_name),
-            kwargs=kwargs)
+        return reverse(kwargs=kwargs)
     elif args:
-        return urlresolvers.reverse(
-            '{0:s}{1:s}'.format(namespace, view_name),
-            args=args)
+        return reverse(args=args)
     else:
-        return urlresolvers.reverse(
-            '{0:s}{1:s}'.format(namespace, view_name))
+        return reverse()
