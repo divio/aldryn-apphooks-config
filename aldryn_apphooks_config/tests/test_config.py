@@ -384,3 +384,14 @@ class AppHookConfigTestCase(BaseTestCase):
 
         field_names = get_apphook_field_names(News())
         self.assertEqual(set(field_names), set(['config', 'section']))
+
+    # Not testable without migrations
+    # def test_apphook_object_discovery_from_objects(self):
+    #     field_names = get_apphook_configs(Article())
+    #     self.assertEqual(field_names, ['section'])
+    #
+    #     field_names = get_apphook_configs(TranslatableArticle())
+    #     self.assertEqual(field_names, ['section'])
+    #
+    #     field_names = get_apphook_configs(News())
+    #     self.assertEqual(set(field_names), set(['config', 'section']))

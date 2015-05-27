@@ -59,9 +59,9 @@ APP_CONFIG_FIELDS_KEY = '_app_config_field_names_{app_label}.{model_name}'
 
 def get_apphook_field_names(model):
     """
-    Cache apphook field names on model
+    Cache app-hook field names on model
 
-    :param model: model
+    :param model: model class or object
     :return: list of foreign key field names to AppHookConfigs
     """
     key = APP_CONFIG_FIELDS_KEY.format(
@@ -74,7 +74,7 @@ def get_apphook_field_names(model):
     return getattr(model, key)
 
 
-def get_apphook_configs_from_obj(obj):
+def get_apphook_configs(obj):
     """
     Get apphook configs for an object obj
 
@@ -82,8 +82,8 @@ def get_apphook_configs_from_obj(obj):
     :return: list of apphook configs for given obj
     """
     key = APP_CONFIG_FIELDS_KEY.format(
-        app_label=obj.__class__._meta.app_label,
-        model_name=obj.__class__._meta.object_name
+        app_label=obj._meta.app_label,
+        model_name=obj._meta.object_name
     ).lower()
     if not hasattr(obj.__class__, key):
         field_names = get_apphook_field_names(obj.__class__)
