@@ -41,7 +41,7 @@ def setup_config(form_class, config_model):
     app_registry.register('config', AppDataContainer.from_form(form_class), config_model)
 
 
-def get_apphook_field_names(model):
+def _get_apphook_field_names(model):
     """
     Return all foreign key field names for a AppHookConfig based model
     """
@@ -55,6 +55,19 @@ def get_apphook_field_names(model):
 
 
 APP_CONFIG_FIELDS_KEY = '_app_config_field_names'
+
+def get_apphook_field_names(model):
+    """
+    Cache apphook field names on model
+
+    :param model: model
+    :return: list of foreign key field names to AppHookConfigs
+    """
+    if not hasattr(model, APP_CONFIG_FIELDS_KEY):
+        field_names = _get_apphook_field_names(model)
+        setattr(model, APP_CONFIG_FIELDS_KEY, field_names)
+    return getattr(model, APP_CONFIG_FIELDS_KEY)
+
 
 def get_apphook_configs_from_obj(obj):
     """
