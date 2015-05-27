@@ -54,6 +54,22 @@ def get_apphook_field_names(model):
     return [field.name for field in fields]
 
 
+APP_CONFIG_FIELDS_KEY = '_app_config_field_names'
+
+def get_apphook_configs_from_obj(obj):
+    """
+    Get apphook configs for an object obj
+
+    :param obj: any model instance
+    :return: list of apphook configs for given obj
+    """
+    if not hasattr(obj.__class__, APP_CONFIG_FIELDS_KEY):
+        field_names = get_apphook_field_names(obj.__class__)
+        setattr(obj.__class__, APP_CONFIG_FIELDS_KEY, field_names)
+    keys = getattr(obj.__class__, APP_CONFIG_FIELDS_KEY)
+    return [getattr(obj, key) for key in keys] if keys else []
+
+
 def get_apphook_model(model, app_config_attribute):
     """
     Return the AppHookConfig model for the provided main model
