@@ -53,8 +53,9 @@ def _get_apphook_field_names(model):
             fields.append(field)
     return [field.name for field in fields]
 
+# making key app/model specific to avoid inheritance issues
+APP_CONFIG_FIELDS_KEY = '_{app_label}.{model_name}_app_config_field_names'
 
-APP_CONFIG_FIELDS_KEY = '_app_config_field_names'
 
 def get_apphook_field_names(model):
     """
@@ -63,10 +64,14 @@ def get_apphook_field_names(model):
     :param model: model
     :return: list of foreign key field names to AppHookConfigs
     """
-    if not hasattr(model, APP_CONFIG_FIELDS_KEY):
+    key = APP_CONFIG_FIELDS_KEY.format(
+        app_label=model._meta.app_label,
+        model_name=model._meta.object_name
+    ).lower()
+    if not hasattr(model, key):
         field_names = _get_apphook_field_names(model)
-        setattr(model, APP_CONFIG_FIELDS_KEY, field_names)
-    return getattr(model, APP_CONFIG_FIELDS_KEY)
+        setattr(model, key, field_names)
+    return getattr(model, key)
 
 
 def get_apphook_configs_from_obj(obj):
@@ -76,10 +81,14 @@ def get_apphook_configs_from_obj(obj):
     :param obj: any model instance
     :return: list of apphook configs for given obj
     """
-    if not hasattr(obj.__class__, APP_CONFIG_FIELDS_KEY):
+    key = APP_CONFIG_FIELDS_KEY.format(
+        app_label=obj.__class__._meta.app_label,
+        model_name=obj.__class__._meta.object_name
+    ).lower()
+    if not hasattr(obj.__class__, key):
         field_names = get_apphook_field_names(obj.__class__)
-        setattr(obj.__class__, APP_CONFIG_FIELDS_KEY, field_names)
-    keys = getattr(obj.__class__, APP_CONFIG_FIELDS_KEY)
+        setattr(obj.__class__, key, field_names)
+    keys = getattr(obj.__class__, key)
     return [getattr(obj, key) for key in keys] if keys else []
 
 
