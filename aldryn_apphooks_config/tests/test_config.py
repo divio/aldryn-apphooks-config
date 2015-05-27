@@ -1,21 +1,20 @@
 # -*- coding: utf-8 -*-
-
 import os.path
 
 from django.template import Template, RequestContext
-from aldryn_apphooks_config.utils import get_app_instance
-
-from cms import api
-from cms.apphook_pool import apphook_pool
-from cms.utils import get_cms_setting
 from django.core.urlresolvers import reverse
 from django.http import SimpleCookie
 from django.utils.encoding import force_text
 from django.utils.six import StringIO
 from django.conf import settings
+
+from cms import api
+from cms.apphook_pool import apphook_pool
+from cms.utils import get_cms_setting
+
 from djangocms_helper.base_test import BaseTestCase
 
-
+from ..utils import get_app_instance, get_apphook_field_names
 from .utils.example.models import (
     AnotherExampleConfig, ExampleConfig, Article, News, TranslatableArticle
 )
@@ -365,3 +364,23 @@ class AppHookConfigTestCase(BaseTestCase):
         template = Template('{% load apphooks_config_tags %}{% namespace_url "example_list" %}')
         response = template.render(context)
         self.assertEqual(response, self.page_2.get_absolute_url())
+
+    def test_apphook_field_name_discovery(self):
+        field_names = get_apphook_field_names(Article)
+        self.assertEqual(field_names, ['section'])
+
+        field_names = get_apphook_field_names(TranslatableArticle)
+        self.assertEqual(field_names, ['section'])
+
+        field_names = get_apphook_field_names(News)
+        self.assertEqual(set(field_names), set(['config', 'section']))
+
+    def test_apphook_field_name_discovery_from_objects(self):
+        field_names = get_apphook_field_names(Article())
+        self.assertEqual(field_names, ['section'])
+
+        field_names = get_apphook_field_names(TranslatableArticle())
+        self.assertEqual(field_names, ['section'])
+
+        field_names = get_apphook_field_names(News())
+        self.assertEqual(set(field_names), set(['config', 'section']))
