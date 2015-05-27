@@ -81,14 +81,7 @@ def get_apphook_configs(obj):
     :param obj: any model instance
     :return: list of apphook configs for given obj
     """
-    key = APP_CONFIG_FIELDS_KEY.format(
-        app_label=obj._meta.app_label,
-        model_name=obj._meta.object_name
-    ).lower()
-    if not hasattr(obj.__class__, key):
-        field_names = get_apphook_field_names(obj.__class__)
-        setattr(obj.__class__, key, field_names)
-    keys = getattr(obj.__class__, key)
+    keys = get_apphook_field_names(obj)
     return [getattr(obj, key) for key in keys] if keys else []
 
 
