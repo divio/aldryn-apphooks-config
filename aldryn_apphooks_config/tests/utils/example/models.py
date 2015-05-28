@@ -35,3 +35,6 @@ class TranslatableArticle(TranslatableModel):
     section = AppHookConfigField(ExampleConfig, verbose_name=_('section'))
 
     objects = AppHookConfigTranslatableManager()
+
+class NotApphookedModel(models.Model):
+    title = models.CharField(_('title'), max_length=234)

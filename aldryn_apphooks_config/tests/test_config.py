@@ -16,7 +16,8 @@ from djangocms_helper.base_test import BaseTestCase
 
 from ..utils import get_app_instance, get_apphook_field_names
 from .utils.example.models import (
-    AnotherExampleConfig, ExampleConfig, Article, News, TranslatableArticle
+    AnotherExampleConfig, ExampleConfig, Article, News, TranslatableArticle,
+    NotApphookedModel
 )
 
 
@@ -375,6 +376,9 @@ class AppHookConfigTestCase(BaseTestCase):
         field_names = get_apphook_field_names(News)
         self.assertEqual(set(field_names), set(['config', 'section']))
 
+        field_names = get_apphook_field_names(NotApphookedModel)
+        self.assertEqual(field_names, [])
+
     def test_apphook_field_name_discovery_from_objects(self):
         field_names = get_apphook_field_names(Article())
         self.assertEqual(field_names, ['section'])
@@ -384,6 +388,9 @@ class AppHookConfigTestCase(BaseTestCase):
 
         field_names = get_apphook_field_names(News())
         self.assertEqual(set(field_names), set(['config', 'section']))
+
+        field_names = get_apphook_field_names(NotApphookedModel())
+        self.assertEqual(field_names, [])
 
     # Not testable without migrations
     # def test_apphook_object_discovery_from_objects(self):
@@ -395,3 +402,6 @@ class AppHookConfigTestCase(BaseTestCase):
     #
     #     field_names = get_apphook_configs(News())
     #     self.assertEqual(set(field_names), set(['config', 'section']))
+    #
+    #     field_names = get_apphook_configs(NotApphookedModel())
+    #     self.assertEqual(field_names, [])
