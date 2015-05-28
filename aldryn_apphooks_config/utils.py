@@ -54,7 +54,7 @@ def _get_apphook_field_names(model):
     return [field.name for field in fields]
 
 # making key app/model specific to avoid inheritance issues
-APP_CONFIG_FIELDS_KEY = '_app_config_field_names_{app_label}.{model_name}'
+APP_CONFIG_FIELDS_KEY = '_app_config_field_names_{app_label}_{model_name}'
 
 
 def get_apphook_field_names(model):
