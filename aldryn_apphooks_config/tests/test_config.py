@@ -14,7 +14,9 @@ from cms.utils import get_cms_setting
 
 from djangocms_helper.base_test import BaseTestCase
 
-from ..utils import get_app_instance, get_apphook_field_names
+from ..utils import (
+    get_app_instance, get_apphook_field_names, get_apphook_configs
+)
 from .utils.example.models import (
     AnotherExampleConfig, ExampleConfig, Article, News, TranslatableArticle,
     NotApphookedModel
@@ -37,6 +39,10 @@ class AppHookConfigTestCase(BaseTestCase):
         self.ns_app_2.app_data.config.property = 'app2_property'
         self.ns_app_2.app_data.config.published_default = True
         self.ns_app_2.save()
+        self.ns_app_3 = AnotherExampleConfig.objects.create(namespace='app3')
+        self.ns_app_3.app_data.config.property = 'app3_property'
+        self.ns_app_3.app_data.config.published_default = True
+        self.ns_app_3.save()
 
         self.page_1 = api.create_page(
             'page_1', self.template, self.language, published=True,
@@ -392,16 +398,19 @@ class AppHookConfigTestCase(BaseTestCase):
         field_names = get_apphook_field_names(NotApphookedModel())
         self.assertEqual(field_names, [])
 
-    # Not testable without migrations
-    # def test_apphook_object_discovery_from_objects(self):
-    #     field_names = get_apphook_configs(Article())
-    #     self.assertEqual(field_names, ['section'])
-    #
-    #     field_names = get_apphook_configs(TranslatableArticle())
-    #     self.assertEqual(field_names, ['section'])
-    #
-    #     field_names = get_apphook_configs(News())
-    #     self.assertEqual(set(field_names), set(['config', 'section']))
-    #
-    #     field_names = get_apphook_configs(NotApphookedModel())
-    #     self.assertEqual(field_names, [])
+    def test_apphook_config_objects_discovery(self):
+        obj = Article(section=self.ns_app_1)
+        configs = get_apphook_configs(obj)
+        self.assertEqual(configs, [self.ns_app_1])
+
+        obj = TranslatableArticle(section=self.ns_app_1)
+        configs = get_apphook_configs(obj)
+        self.assertEqual(configs, [self.ns_app_1])
+
+        obj = News(section=self.ns_app_1, config=self.ns_app_3)
+        configs = get_apphook_configs(obj)
+        self.assertEqual(set(configs), set([self.ns_app_1, self.ns_app_3]))
+
+        obj = NotApphookedModel()
+        configs = get_apphook_configs(obj)
+        self.assertEqual(configs, [])

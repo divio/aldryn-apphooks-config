@@ -44,3 +44,6 @@ docs/_build
 #DB
 *.sqlite
 *.db
+
+# Coverage
+coverage_html
