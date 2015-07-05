@@ -12,8 +12,12 @@ sudo: false
 
 env:
   matrix:
-  - DJANGO='django16'
-  - DJANGO='django17'
+  - DJANGO='django16' CMS='cms30'
+  - DJANGO='django16' CMS='cms31'
+  - DJANGO='django17' CMS='cms30'
+  - DJANGO='django17' CMS='cms31'
+  - DJANGO='django18' CMS='cms31'
+
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
@@ -31,7 +35,11 @@ after_success: coveralls
 matrix:
   exclude:
     - python: 2.6
-      env: DJANGO='django17'
+      env: DJANGO='django17' CMS='cms30'
+    - python: 2.6
+      env: DJANGO='django17' CMS='cms31'
+    - python: 2.6
+      env: DJANGO='django18' CMS='cms31'
 
 notifications:
   webhooks: http://addons.us-iad-rs.aldryn.io/en/travis-endpoint/

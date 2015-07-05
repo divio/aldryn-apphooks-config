@@ -36,16 +36,12 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
-        'django-appdata>=0.1.3',
+        'django-appdata>=0.1.4',
         'django-cms>=3.0.11'
     ],
     extra_requires={
-        'parler': 'django-parler>=1.2.1,<1.3'
+        'parler': 'django-parler>=1.2.1,<1.5'
     },
-    dependency_links=[
-        'https://github.com/yakky/django-cms/tarball/future/integration#egg=django-cms-3.0.90a1',
-        'https://github.com/ella/django-appdata/tarball/635be13b61f7eb347ed4fb03f11f1d6ae84569ec#egg=django-appdata-0.1.3'
-    ],
     test_suite='test_settings.run',
     license="BSD",
     zip_safe=False,
@@ -56,6 +52,10 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
+        'Framework :: Django',
+        'Framework :: Django :: 1.6',
+        'Framework :: Django :: 1.7',
+        'Framework :: Django :: 1.8',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
