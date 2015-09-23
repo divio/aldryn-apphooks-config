@@ -18,14 +18,10 @@ HELPER_SETTINGS = dict(
     },
     INSTALLED_APPS=[
         'app_data',
-        'djangocms_text_ckeditor',
         'cms.test_utils.project.sampleapp',
         'aldryn_apphooks_config.tests.utils.example',
         'parler'
     ],
-    MIGRATION_MODULES={
-        'djangocms_text_ckeditor': 'djangocms_text_ckeditor.migrations_django',
-    }
 )
 
 

@@ -1,37 +1,42 @@
-# Config file for automatic testing at travis-ci.org
-
 language: python
 
-python:
-  - 3.3
-  - 3.4
-  - 2.7
-  - 2.6
-
+# Use container based infrastructure
 sudo: false
 
 env:
   matrix:
-  - DJANGO='django16'
-  - DJANGO='django17'
+    - TOXENV=py34-django18-cms32
+    - TOXENV=py34-django18-cms31
+    - TOXENV=py34-django17-cms32
+    - TOXENV=py34-django17-cms31
+    - TOXENV=py33-django18-cms32
+    - TOXENV=py33-django18-cms31
+    - TOXENV=py33-django17-cms32
+    - TOXENV=py33-django17-cms31
+    - TOXENV=py27-django18-cms32
+    - TOXENV=py27-django18-cms31
+    - TOXENV=py27-django17-cms32
+    - TOXENV=py27-django17-cms31
+    - TOXENV=py34-django16-cms32
+    - TOXENV=py34-django16-cms31
+    - TOXENV=py33-django16-cms32
+    - TOXENV=py33-django16-cms31
+    - TOXENV=py27-django16-cms32
+    - TOXENV=py27-django16-cms31
+    - TOXENV=py26-django16-cms32
+    - TOXENV=py26-django16-cms31
 
-# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+cache:
+  directories:
+    - $HOME/.wheelhouse
+
 install:
-  - pip install -U tox>=1.8 coveralls
-  - "if [[ $TRAVIS_PYTHON_VERSION == '2.6' ]]; then export PYVER=py26; fi"
-  - "if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then export PYVER=py27; fi"
-  - "if [[ $TRAVIS_PYTHON_VERSION == '3.3' ]]; then export PYVER=py33; fi"
-  - "if [[ $TRAVIS_PYTHON_VERSION == '3.4' ]]; then export PYVER=py34; fi"
+  - pip install tox
+  - pip install coveralls
 
-# command to run tests, e.g. python setup.py test
-script: COMMAND='coverage run' tox -e"$PYVER-$DJANGO"
+script: COMMAND='coverage run' tox -e"$TOXENV"
 
 after_success: coveralls
-
-matrix:
-  exclude:
-    - python: 2.6
-      env: DJANGO='django17'
 
 notifications:
   webhooks: http://addons.us-iad-rs.aldryn.io/en/travis-endpoint/

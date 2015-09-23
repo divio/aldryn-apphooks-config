@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from copy import deepcopy
 import os.path
 
 from django.template import Template, RequestContext
@@ -232,12 +233,14 @@ class AppHookConfigTestCase(BaseTestCase):
 
         # correct parameter passed by the request
         request = self.get_page_request(self.page_3, self.user)
+        request.GET = deepcopy(request.GET)
         request.GET['section'] = self.ns_app_1.pk
         retrieved = admin_instance.get_config_data(request, article, 'property')
         self.assertEqual(retrieved, self.ns_app_1.property)
 
         # correct parameter passed by the request - no existing object
         request = self.get_page_request(self.page_3, self.user)
+        request.GET = deepcopy(request.GET)
         request.GET['section'] = self.ns_app_1.pk
         retrieved = admin_instance.get_config_data(request, Article(), 'property')
         self.assertEqual(retrieved, self.ns_app_1.property)
@@ -294,6 +297,7 @@ class AppHookConfigTestCase(BaseTestCase):
 
         # object is set, normal form is used
         request = self.get_page_request(self.page_3, self.user)
+        request.GET = deepcopy(request.GET)
         request.GET['section'] = self.ns_app_1.pk
         form = admin_instance.get_form(request, article)
         self.assertEqual(list(form.base_fields.keys()), ['title', 'slug', 'section', 'published'])
@@ -301,6 +305,7 @@ class AppHookConfigTestCase(BaseTestCase):
 
         # no object is set, parameter passed through the request
         request = self.get_page_request(self.page_3, self.user)
+        request.GET = deepcopy(request.GET)
         request.GET['section'] = self.ns_app_1.pk
         form = admin_instance.get_form(request, None)
         self.assertEqual(list(form.base_fields.keys()), ['title', 'slug', 'section', 'published'])
