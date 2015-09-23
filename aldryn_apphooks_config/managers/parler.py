@@ -39,4 +39,4 @@ class AppHookConfigTranslatableManager(TranslatableManager, ManagerMixin):
     queryset_class = AppHookConfigTranslatableQueryset
 
     def get_queryset(self):
-        return AppHookConfigTranslatableQueryset(self.model, using=self.db)
+        return self.queryset_class(self.model, using=self.db)
