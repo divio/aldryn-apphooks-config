@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function, unicode_literals
+
 from aldryn_apphooks_config.app_base import CMSConfigApp
 from cms.apphook_pool import apphook_pool
 from django.conf.urls import patterns, url

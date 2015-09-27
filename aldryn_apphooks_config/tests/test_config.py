@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
-from copy import deepcopy
-import os.path
+from __future__ import absolute_import, print_function, unicode_literals
 
+import os.path
+from copy import deepcopy
+
+from cms import api
+from cms.apphook_pool import apphook_pool
+from cms.utils import get_cms_setting
 from django.template import Template, RequestContext
 from django.core.urlresolvers import reverse
 from django.http import SimpleCookie
 from django.utils.encoding import force_text
 from django.utils.six import StringIO
 from django.conf import settings
-
-from cms import api
-from cms.apphook_pool import apphook_pool
-from cms.utils import get_cms_setting
-
 from djangocms_helper.base_test import BaseTestCase
+
 
 from ..utils import (
     get_app_instance, get_apphook_field_names, get_apphook_configs

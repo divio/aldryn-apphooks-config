@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
+from __future__ import absolute_import, print_function, unicode_literals
 
 from functools import partial
 
@@ -37,7 +36,7 @@ def namespace_url(context, view_name, *args, **kwargs):
         namespace, __ = get_app_instance(context['request'])
 
     if namespace:
-        namespace += ":"
+        namespace += ':'
 
     reverse = partial(
         urlresolvers.reverse, '{0:s}{1:s}'.format(namespace, view_name))
@@ -51,7 +50,7 @@ def namespace_url(context, view_name, *args, **kwargs):
             return reverse(args=args)
         else:
             return reverse()
-        
+
     default = kwargs.pop('default', None)
     try:
         if kwargs:

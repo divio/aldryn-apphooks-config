@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function, unicode_literals
+
 import copy
+
 from app_data.admin import AppDataModelAdmin
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
@@ -57,7 +60,9 @@ class ModelAppHookConfig(object):
             return getattr(obj, self.app_config_attribute)
         elif request.GET.get(self.app_config_attribute, False):
             config_model = get_apphook_model(self.model, self.app_config_attribute)
-            return config_model.objects.get(pk=int(request.GET.get(self.app_config_attribute, False)))
+            return config_model.objects.get(
+                pk=int(request.GET.get(self.app_config_attribute, False))
+            )
         return False
 
     def _set_config_defaults(self, request, form, obj=None):

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function, unicode_literals
 
 try:
     from parler.managers import TranslatableManager, TranslatableQuerySet
 except ImportError:
     raise ImportError(
-        "Parler can not be found. Use pip install "
-        "aldryn-apphooks-config[parler] or just install django-parler."
+        'Parler can not be found. Use pip install '
+        'aldryn-apphooks-config[parler] or just install django-parler.'
     )
 
 from aldryn_apphooks_config.managers.base import (
