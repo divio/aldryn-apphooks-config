@@ -7,7 +7,7 @@ from django.conf.urls import patterns, url
 from django.utils.translation import ugettext_lazy as _
 
 from .models import ExampleConfig
-from .views import ArticleList, ArticleDetail
+from .views import ArticleDetail, ArticleList
 
 
 class ExampleApp(CMSConfigApp):

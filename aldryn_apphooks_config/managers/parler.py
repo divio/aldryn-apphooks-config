@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
+from aldryn_apphooks_config.managers.base import ManagerMixin, QuerySetMixin
+
 try:
     from parler.managers import TranslatableManager, TranslatableQuerySet
 except ImportError:
@@ -9,9 +11,6 @@ except ImportError:
         'aldryn-apphooks-config[parler] or just install django-parler.'
     )
 
-from aldryn_apphooks_config.managers.base import (
-    QuerySetMixin, ManagerMixin
-)
 
 
 class AppHookConfigTranslatableQueryset(TranslatableQuerySet, QuerySetMixin):

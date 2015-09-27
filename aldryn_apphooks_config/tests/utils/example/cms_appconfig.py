@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from django import forms
-from django.utils.translation import ugettext_lazy as _
-from django.db import models
-
 from aldryn_apphooks_config.models import AppHookConfig
 from aldryn_apphooks_config.utils import setup_config
 from app_data import AppDataForm
+from django import forms
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 
 class ExampleConfig(AppHookConfig):

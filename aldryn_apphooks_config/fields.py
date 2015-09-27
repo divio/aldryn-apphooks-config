@@ -12,8 +12,10 @@ class AppHookConfigFormField(forms.ModelChoiceField):
 
     def __init__(self, queryset, empty_label='---------',
                  required=True, widget=AppHookConfigWidget, *args, **kwargs):
-        super(AppHookConfigFormField, self).__init__(queryset, empty_label,
-                                                     required, widget, *args, **kwargs)
+        super(AppHookConfigFormField, self).__init__(
+            queryset=queryset, empty_label=empty_label, required=required, widget=widget,
+            *args, **kwargs
+        )
 
 
 class AppHookConfigField(models.ForeignKey):

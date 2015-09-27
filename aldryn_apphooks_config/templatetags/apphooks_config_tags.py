@@ -9,7 +9,6 @@ from django.core.urlresolvers import NoReverseMatch
 
 from ..utils import get_app_instance
 
-
 register = template.Library()
 
 
