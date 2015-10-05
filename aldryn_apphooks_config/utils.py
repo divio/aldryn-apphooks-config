@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-
-from django.core.urlresolvers import resolve, Resolver404
-from django.db.models import ForeignKey
-from django.utils.translation import override, get_language_from_request
+from __future__ import absolute_import, print_function, unicode_literals
 
 from app_data import AppDataContainer, app_registry
 from cms.apphook_pool import apphook_pool
+from django.core.urlresolvers import Resolver404, resolve
+from django.db.models import ForeignKey
+from django.utils.translation import get_language_from_request, override
 
 
 def get_app_instance(request):
@@ -16,7 +16,7 @@ def get_app_instance(request):
     :return: namespace, config
     """
     app = None
-    if getattr(request, 'current_page', None):
+    if getattr(request, 'current_page', None) and request.current_page.application_urls:
         app = apphook_pool.get_apphook(request.current_page.application_urls)
 
     if app and app.app_config:
@@ -48,8 +48,7 @@ def _get_apphook_field_names(model):
     from .models import AppHookConfig  # avoid circular dependencies
     fields = []
     for field in model._meta.fields:
-        if (isinstance(field, ForeignKey)
-                and issubclass(field.rel.to, AppHookConfig)):
+        if isinstance(field, ForeignKey) and issubclass(field.rel.to, AppHookConfig):
             fields.append(field)
     return [field.name for field in fields]
 

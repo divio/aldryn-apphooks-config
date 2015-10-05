@@ -1,26 +1,23 @@
 # -*- coding: utf-8 -*-
-from copy import deepcopy
-import os.path
+from __future__ import absolute_import, print_function, unicode_literals
 
-from django.template import Template, RequestContext
-from django.core.urlresolvers import reverse
-from django.http import SimpleCookie
-from django.utils.encoding import force_text
-from django.utils.six import StringIO
-from django.conf import settings
+import os.path
+from copy import deepcopy
 
 from cms import api
 from cms.apphook_pool import apphook_pool
 from cms.utils import get_cms_setting
-
+from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.http import SimpleCookie
+from django.template import RequestContext, Template
+from django.utils.encoding import force_text
+from django.utils.six import StringIO
 from djangocms_helper.base_test import BaseTestCase
 
-from ..utils import (
-    get_app_instance, get_apphook_field_names, get_apphook_configs
-)
+from ..utils import get_app_instance, get_apphook_configs, get_apphook_field_names
 from .utils.example.models import (
-    AnotherExampleConfig, ExampleConfig, Article, News, TranslatableArticle,
-    NotApphookedModel
+    AnotherExampleConfig, Article, ExampleConfig, News, NotApphookedModel, TranslatableArticle,
 )
 
 
@@ -176,9 +173,9 @@ class AppHookConfigTestCase(BaseTestCase):
                             slug='news_2_app_1_config2',
                             section=self.ns_app_1,
                             config=ans_config_2)
-        msg = ("'{0}' has {1} relations to an ApphookConfig model."
-               " Please, specify which one to use in argument 'to'."
-               " Choices are: {2}".format('News', '2', 'section, config'))
+        msg = ('"{0}" has {1} relations to an ApphookConfig model.'
+               ' Please, specify which one to use in argument "to".'
+               ' Choices are: {2}'.format('News', '2', 'section, config'))
         self.assertRaisesMessage(
             ValueError, msg, News.objects.namespace, ans_config_1.namespace
         )

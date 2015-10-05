@@ -1,4 +1,5 @@
-from distutils.version import LooseVersion
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import, print_function, unicode_literals
 
 HELPER_SETTINGS = dict(
     TIME_ZONE='Europe/Zurich',
@@ -8,12 +9,13 @@ HELPER_SETTINGS = dict(
     ),
     PARLER_LANGUAGES={
         None: (
-            {'code': 'en',},
-            {'code': 'de',},
+            {'code': 'en', },
+            {'code': 'de', },
         ),
         'default': {
             'fallback': 'en',  # defaults to PARLER_DEFAULT_LANGUAGE_CODE
-            'hide_untranslated': False,   # the default; let .active_translations() return fallbacks too.
+            # the default; let .active_translations() return fallbacks too.
+            'hide_untranslated': False,
         }
     },
     INSTALLED_APPS=[

@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
-from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from __future__ import absolute_import, print_function, unicode_literals
 
 from aldryn_apphooks_config.fields import AppHookConfigField
 from aldryn_apphooks_config.managers import AppHookConfigManager
-from aldryn_apphooks_config.managers.parler import (
-    AppHookConfigTranslatableManager
-)
+from aldryn_apphooks_config.managers.parler import AppHookConfigTranslatableManager
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from parler.models import TranslatableModel, TranslatedFields
 
-from .cms_appconfig import ExampleConfig, AnotherExampleConfig
+from .cms_appconfig import AnotherExampleConfig, ExampleConfig
 
 
 class Article(models.Model):
