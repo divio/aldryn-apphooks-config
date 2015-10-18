@@ -23,7 +23,7 @@ def get_app_instance(request):
         try:
             config = None
             with override(get_language_from_request(request, check_path=True)):
-                namespace = resolve(request.path).namespace
+                namespace = resolve(request.path_info).namespace
                 config = app.get_config(namespace)
             return namespace, config
         except Resolver404:
