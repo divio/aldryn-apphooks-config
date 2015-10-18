@@ -27,7 +27,7 @@ plain namespaces.
 Implementation step-guide
 =========================
 
-* Define a AppHookConfig model::
+* Define a AppHookConfig model in ``cms_appconfig.py``::
 
     from aldryn_apphooks_config.models import AppHookConfig
 
@@ -55,7 +55,7 @@ integrated variants can be found in ``aldryn_apphooks_config.managers.parler``.
 Names are ``AppHookConfigTranslatableManager`` and
 ``AppHookConfigTranslatableQueryset``.
 
-* Define a ConfigForm::
+* Define a ConfigForm in ``cms_appconfig.py``::
 
     from app_data import AppDataForm
     from django import forms
@@ -72,7 +72,7 @@ Names are ``AppHookConfigTranslatableManager`` and
     # at the above step
     setup_config(BlogOptionForm, NewsBlogConfig)
 
-* Define an admin class for the AppHookConfig model::
+* Define an admin class for the AppHookConfig model (usually in ``admin.py``::
 
     from django.contrib import admin
     from aldryn_apphooks_config.admin import BaseAppHookConfig
@@ -85,7 +85,8 @@ Names are ``AppHookConfigTranslatableManager`` and
             # This is dependent on the django-appdata API
             return ('config.show_authors', ...)
 
-* Define a CMSApp derived from CMSConfigApp provided by this application::
+* Define a CMSApp derived from CMSConfigApp provided by this application
+(in ``cms_app.py``/``cms_apps.py``)::
 
     from aldryn_apphooks_config.app_base import CMSConfigApp
     from cms.apphook_pool import apphook_pool
