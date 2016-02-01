@@ -5,12 +5,11 @@ sudo: false
 
 env:
   matrix:
-    - TOXENV=pep8
+    - TOXENV=flake8
     - TOXENV=py35-django19-cms32
     - TOXENV=py35-django18-cms32
     - TOXENV=py35-django18-cms31
     - TOXENV=py34-django19-cms32
-    - TOXENV=py33-django19-cms32
     - TOXENV=py27-django19-cms32
     - TOXENV=py34-django18-cms32
     - TOXENV=py34-django18-cms31
