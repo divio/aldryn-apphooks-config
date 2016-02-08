@@ -12,7 +12,6 @@ except ImportError:
     )
 
 
-
 class AppHookConfigTranslatableQueryset(TranslatableQuerySet, QuerySetMixin):
 
     def create(self, **kwargs):
