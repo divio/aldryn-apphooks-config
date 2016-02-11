@@ -319,6 +319,27 @@ class AppHookConfigTestCase(BaseTestCase):
         self.assertEqual(list(form.base_fields.keys()), ['title', 'slug', 'section', 'published'])
         self.assertEqual(form.base_fields['section'].initial, self.ns_app_1)
 
+    def test_apphook_admin(self):
+        from django.contrib import admin
+        admin.autodiscover()
+
+        admin_instance = admin.site._registry[ExampleConfig]
+        request = self.get_page_request(self.page_3, self.user)
+
+        # Testing Readonly field
+        self.assertEqual(
+            admin_instance.get_readonly_fields(request), ('type',)
+        )
+        self.assertEqual(
+            admin_instance.get_readonly_fields(request, self.ns_app_1), ('type', 'namespace')
+        )
+
+        # Testing admin output for sample app specific implementation
+        response = admin_instance.change_view(request, str(self.ns_app_1.pk))
+        self.assertContains(response, '<p>aldryn_apphooks_config.tests.utils.example.cms_appconfig.ExampleConfig</p>')
+        self.assertContains(response, '<p>app1</p>')
+        self.assertContains(response, 'name="config-property" type="text" value="app1_property"')
+
     def test_admin(self):
         from django.contrib import admin
         admin.autodiscover()
