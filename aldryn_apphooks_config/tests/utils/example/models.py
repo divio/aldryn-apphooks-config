@@ -35,5 +35,6 @@ class TranslatableArticle(TranslatableModel):
 
     objects = AppHookConfigTranslatableManager()
 
+
 class NotApphookedModel(models.Model):
     title = models.CharField(_('title'), max_length=234)
