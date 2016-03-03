@@ -33,6 +33,12 @@ class BaseAppHookConfig(AppDataModelAdmin):
     def get_config_fields(self):
         return ()
 
+    def get_readonly_fields(self, request, obj=None):
+        if obj and obj.pk:
+            return tuple(self.readonly_fields) + ('namespace',)
+        else:
+            return self.readonly_fields
+
 
 class ModelAppHookConfig(object):
     app_config_attribute = 'app_config'
