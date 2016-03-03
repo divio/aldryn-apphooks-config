@@ -3,6 +3,15 @@
 History
 -------
 
+0.2.7 (2016-03-03)
+++++++++++++++++++
+
+* Set namespace as readonly
+* Add official Django 1.9 support
+* Update readme
+* Use path_info instead of path in resolve
+
+
 0.2.6 (2015-10-05)
 ++++++++++++++++++
 
