@@ -15,14 +15,14 @@ class AppHookConfig(models.Model):
     """
     type = models.CharField(_('type'), max_length=100)
     namespace = models.CharField(
-        _(u'instance namespace'), default=None, max_length=100, unique=True)
+        _('instance namespace'), default=None, max_length=100, unique=True)
     app_data = AppDataField()
 
     cmsapp = None
 
     class Meta:
-        verbose_name = _(u'Apphook config')
-        verbose_name_plural = _(u'Apphook configs')
+        verbose_name = _('Apphook config')
+        verbose_name_plural = _('Apphook configs')
         unique_together = ('type', 'namespace')
         abstract = True
 
@@ -33,9 +33,9 @@ class AppHookConfig(models.Model):
 
     def __str__(self):
         if self.cmsapp:
-            return _(u'%s / %s') % (self.cmsapp.name, self.namespace)
+            return _('%s / %s') % (self.cmsapp.name, self.namespace)
         else:
-            return _(u'%s / %s') % (self.type, self.namespace)
+            return _('%s / %s') % (self.type, self.namespace)
 
     def __getattr__(self, item):
         """

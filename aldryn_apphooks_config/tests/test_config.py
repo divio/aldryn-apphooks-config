@@ -78,7 +78,7 @@ class AppHookConfigTestCase(BaseTestCase):
         request = self.get_page_request(self.page_3, self.user)
         config = get_app_instance(request)
         # when config is requested on a non-config apphook, just return empty data
-        self.assertEqual((u'', None), config)
+        self.assertEqual(('', None), config)
 
     def test_no_page(self):
         request = self.request_factory.get('/en/sample/login/')
@@ -90,7 +90,7 @@ class AppHookConfigTestCase(BaseTestCase):
         # when config is requested on a non-CMS url, just return empty data
         with self.settings(ROOT_URLCONF='cms.test_utils.project.urls'):
             config = get_app_instance(request)
-            self.assertEqual((u'', None), config)
+            self.assertEqual(('', None), config)
 
     def test_config_str(self):
         app = apphook_pool.get_apphook(self.page_1.application_urls)
