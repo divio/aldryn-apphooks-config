@@ -21,12 +21,14 @@ class AppHookConfigFormField(forms.ModelChoiceField):
 class AppHookConfigField(models.ForeignKey):
 
     def __init__(self, *args, **kwargs):
-        kwargs.update({'help_text': _('When selecting a value, the form is reloaded to '
-                                      'get the updated default')})
+        if 'help_text' not in kwargs:
+            kwargs.update({'help_text': _('When selecting a value, the form is reloaded to '
+                                          'get the updated default')})
         super(AppHookConfigField, self).__init__(*args, **kwargs)
 
     def formfield(self, **kwargs):
-        kwargs.update({'form_class': AppHookConfigFormField})
+        if 'form_class' not in kwargs:
+            kwargs.update({'form_class': AppHookConfigFormField})
         return super(AppHookConfigField, self).formfield(**kwargs)
 
 try:
