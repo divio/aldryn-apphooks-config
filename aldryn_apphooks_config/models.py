@@ -4,6 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 from app_data import AppDataField
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.html import escape
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -33,9 +34,9 @@ class AppHookConfig(models.Model):
 
     def __str__(self):
         if self.cmsapp:
-            return _('%s / %s') % (self.cmsapp.name, self.namespace)
+            return _('%s / %s') % (escape(self.cmsapp.name), escape(self.namespace))
         else:
-            return _('%s / %s') % (self.type, self.namespace)
+            return _('%s / %s') % (escape(self.type), escape(self.namespace))
 
     def __getattr__(self, item):
         """
