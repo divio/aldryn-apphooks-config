@@ -37,10 +37,10 @@ setup(
     include_package_data=True,
     install_requires=[
         'django-appdata>=0.1.4',
-        'django-cms>=3.0.11'
+        'django-cms>=3.2'
     ],
     extra_requires={
-        'parler': 'django-parler>=1.2.1,<1.5'
+        'parler': 'django-parler>=1.2.1'
     },
     test_suite='test_settings.run',
     license="BSD",
@@ -53,14 +53,12 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
         'Framework :: Django',
-        'Framework :: Django :: 1.6',
-        'Framework :: Django :: 1.7',
         'Framework :: Django :: 1.8',
+        'Framework :: Django :: 1.9',
+        'Framework :: Django :: 1.10',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],

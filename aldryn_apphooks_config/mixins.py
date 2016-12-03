@@ -15,8 +15,10 @@ class AppConfigMixin(object):
     """
     def dispatch(self, request, *args, **kwargs):
         self.namespace, self.config = get_app_instance(request)
+        request.current_app = self.namespace
         return super(AppConfigMixin, self).dispatch(request, *args, **kwargs)
 
     def render_to_response(self, context, **response_kwargs):
-        response_kwargs['current_app'] = self.namespace
+        if 'current_app' in response_kwargs:  # pragma: no cover
+            response_kwargs['current_app'] = self.namespace
         return super(AppConfigMixin, self).render_to_response(context, **response_kwargs)
