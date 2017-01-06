@@ -11,7 +11,10 @@ class AppHookConfigWidget(forms.Select):
         js = ('js/aldryn_apphooks_config/aldryn_apphooks_config.js',)
 
     def render(self, name, value, attrs=None, choices=()):
-        out = super(AppHookConfigWidget, self).render(name, value, attrs, choices)
+        if choices:  # pragma: no cover
+            out = super(AppHookConfigWidget, self).render(name, value, attrs, choices)
+        else:
+            out = super(AppHookConfigWidget, self).render(name, value, attrs)
         final_attrs = self.build_attrs(attrs, name=name)
         script = """
         <script>

@@ -3,10 +3,14 @@
 History
 -------
 
-0.2.8 (unreleased)
+0.3.0 (unreleased)
 ++++++++++++++++++
 
-* Allow override AppHookConfigField attributes
+* Allowed override AppHookConfigField attributes
+* Drop Django 1.7 and below
+* Drop django CMS 3.1 and below
+* Add Django 1.10 support
+
 
 0.2.7 (2016-03-03)
 ++++++++++++++++++

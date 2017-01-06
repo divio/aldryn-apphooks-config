@@ -7,6 +7,9 @@ from django.core.urlresolvers import Resolver404, resolve
 from django.db.models import ForeignKey
 from django.utils.translation import get_language_from_request, override
 
+# making key app/model specific to avoid inheritance issues
+APP_CONFIG_FIELDS_KEY = '_app_config_field_names_{app_label}_{model_name}'
+
 
 def get_app_instance(request):
     """
@@ -52,9 +55,6 @@ def _get_apphook_field_names(model):
             fields.append(field)
     return [field.name for field in fields]
 
-# making key app/model specific to avoid inheritance issues
-APP_CONFIG_FIELDS_KEY = '_app_config_field_names_{app_label}_{model_name}'
-
 
 def get_apphook_field_names(model):
     """
@@ -92,4 +92,4 @@ def get_apphook_model(model, app_config_attribute):
     :param app_config_attribute: Fieldname of the app_config
     :return: app_config model
     """
-    return model._meta.get_field_by_name(app_config_attribute)[0].rel.to
+    return model._meta.get_field(app_config_attribute).rel.to

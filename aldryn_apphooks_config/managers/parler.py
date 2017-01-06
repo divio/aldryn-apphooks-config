@@ -5,7 +5,7 @@ from aldryn_apphooks_config.managers.base import ManagerMixin, QuerySetMixin
 
 try:
     from parler.managers import TranslatableManager, TranslatableQuerySet
-except ImportError:
+except ImportError:  # pragma: no cover
     raise ImportError(
         'Parler can not be found. Use pip install '
         'aldryn-apphooks-config[parler] or just install django-parler.'

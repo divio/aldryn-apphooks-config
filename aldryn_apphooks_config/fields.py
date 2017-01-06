@@ -30,10 +30,3 @@ class AppHookConfigField(models.ForeignKey):
         if 'form_class' not in kwargs:
             kwargs.update({'form_class': AppHookConfigFormField})
         return super(AppHookConfigField, self).formfield(**kwargs)
-
-try:
-    from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ['^aldryn_apphooks_config\.fields\.AppHookConfigField'])
-except:
-    # If South isn't installed, then we didn't need this anyway.
-    pass
