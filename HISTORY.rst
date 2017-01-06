@@ -3,7 +3,7 @@
 History
 -------
 
-0.3.0 (unreleased)
+0.3.0 (2017-01-06)
 ++++++++++++++++++
 
 * Allowed override AppHookConfigField attributes
