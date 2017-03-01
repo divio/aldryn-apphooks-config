@@ -42,8 +42,8 @@ class BaseAppHookConfig(AppDataModelAdmin):
 
 class ModelAppHookConfig(object):
     app_config_attribute = 'app_config'
-    app_config_selection_title = 'Select app config'
-    app_config_selection_desc = 'Select the app config for the new object'
+    app_config_selection_title = _('Select app config')
+    app_config_selection_desc = _('Select the app config for the new object')
     app_config_values = {}
 
     def _app_config_select(self, request, obj):

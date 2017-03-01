@@ -6,12 +6,11 @@ from aldryn_apphooks_config.utils import setup_config
 from app_data import AppDataForm
 from django import forms
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 
 
 class ExampleConfig(AppHookConfig):
     """Adds some translatable, per-app-instance fields."""
-    app_title = models.CharField(_('application title'), max_length=234)
+    app_title = models.CharField('application title', max_length=234)
 
 
 class AnotherExampleConfig(AppHookConfig):
