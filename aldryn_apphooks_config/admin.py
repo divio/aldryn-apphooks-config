@@ -27,7 +27,7 @@ class BaseAppHookConfig(AppDataModelAdmin):
     def declared_fieldsets(self):
         return [
             (None, {'fields': ('type', 'namespace')}),
-            ('Config', {'fields': self.get_config_fields()})
+            (_('Config'), {'fields': self.get_config_fields()})
         ]
 
     def get_config_fields(self):

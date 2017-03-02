@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-01 16:36+0100\n"
+"POT-Creation-Date: 2017-03-02 10:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Angelo Dini <finalangeljp@hotmail.com>, 2017\n"
 "Language-Team: German (https://www.transifex.com/divio/teams/58664/de/)\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin.py:30
+msgid "Config"
+msgstr "Konfiguration"
 
 #: admin.py:45
 msgid "Select app config"
@@ -62,8 +66,8 @@ msgstr "Instanz Namensraum"
 
 #: models.py:31
 msgid "Apphook config"
-msgstr "\"Apphook\" Konfiguration"
+msgstr "Apphook Konfiguration"
 
 #: models.py:32
 msgid "Apphook configs"
-msgstr "\"Apphook\" Konfigurationen"
+msgstr "Apphook Konfigurationen"
