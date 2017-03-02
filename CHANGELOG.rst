@@ -3,7 +3,7 @@ Changelog
 =========
 
 
-0.3.1 (unreleased)
+0.3.1 (2016-03-02)
 ==================
 
 * Added translation system
