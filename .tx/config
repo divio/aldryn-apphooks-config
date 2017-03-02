@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+
+[aldryn-apphooks-config.aldryn_apphooks_config]
+file_filter = aldryn_apphooks_config/locale/<lang>/LC_MESSAGES/django.po
+source_file = aldryn_apphooks_config/locale/en/LC_MESSAGES/django.po
+source_lang = en
+type = PO

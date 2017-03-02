@@ -13,9 +13,16 @@ class AppHookConfig(models.Model):
     This is the generic (abstract) model that holds the configurations for each AppHookConfig
     concrete model
     """
-    type = models.CharField(_('type'), max_length=100)
+    type = models.CharField(
+        _('Type'),
+        max_length=100,
+    )
     namespace = models.CharField(
-        _('instance namespace'), default=None, max_length=100, unique=True)
+        _('Instance namespace'),
+        default=None,
+        max_length=100,
+        unique=True,
+    )
     app_data = AppDataField()
 
     cmsapp = None
@@ -33,9 +40,9 @@ class AppHookConfig(models.Model):
 
     def __str__(self):
         if self.cmsapp:
-            return _('%s / %s') % (self.cmsapp.name, self.namespace)
+            return '%s / %s' % (self.cmsapp.name, self.namespace)
         else:
-            return _('%s / %s') % (self.type, self.namespace)
+            return '%s / %s' % (self.type, self.namespace)
 
     def __getattr__(self, item):
         """

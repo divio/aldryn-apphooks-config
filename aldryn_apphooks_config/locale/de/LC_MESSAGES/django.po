@@ -1,0 +1,73 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-02 10:09+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Angelo Dini <finalangeljp@hotmail.com>, 2017\n"
+"Language-Team: German (https://www.transifex.com/divio/teams/58664/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin.py:30
+msgid "Config"
+msgstr "Konfiguration"
+
+#: admin.py:45
+msgid "Select app config"
+msgstr "App Konfiguration selektieren"
+
+#: admin.py:46
+msgid "Select the app config for the new object"
+msgstr "App Konfiguration für das neue Objekt selektieren"
+
+#: fields.py:25
+msgid ""
+"When selecting a value, the form is reloaded to get the updated default"
+msgstr "Das Formular wird neu geladen wenn ein neuer Wert ausgewählt wurde"
+
+#: managers/base.py:22
+#, python-brace-format
+msgid "Can't find any relation to an ApphookConfig model in {0}"
+msgstr "Es kann keine Relation zum \"ApphookConfig\" Model in {0} gefunden werden"
+
+#: managers/base.py:28
+#, python-brace-format
+msgid "Can't find relation to ApphookConfig model named \"{0}\" in \"{1}\""
+msgstr ""
+"Es kann keine Relation zum \"ApphookConfig\" Model mit dem Name \"{0}\" in "
+"\"{1}\" gefunden werden"
+
+#: managers/base.py:35
+#, python-brace-format
+msgid ""
+"\"{0}\" has {1} relations to an ApphookConfig model. Please, specify which "
+"one to use in argument \"to\". Choices are: {2}"
+msgstr ""
+"\"{0}\" hat {1} Relationen zum \"ApphookConfig\" Model. Bitte spezifizieren "
+"welche benutzt werden soll im Feld \"Zu\". Auswahlmöglichkeiten sind: {2}"
+
+#: models.py:17
+msgid "Type"
+msgstr "Typ"
+
+#: models.py:21
+msgid "Instance namespace"
+msgstr "Instanz Namensraum"
+
+#: models.py:31
+msgid "Apphook config"
+msgstr "Apphook Konfiguration"
+
+#: models.py:32
+msgid "Apphook configs"
+msgstr "Apphook Konfigurationen"
