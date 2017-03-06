@@ -3,10 +3,12 @@ Changelog
 =========
 
 
-0.3.2 (unreleased)
+0.3.2 (2017-03-06)
 ==================
 
 * Fixed setup.py issue
+* Added locale files to MANIFEST.in
+
 
 0.3.1 (2017-03-02)
 ==================
