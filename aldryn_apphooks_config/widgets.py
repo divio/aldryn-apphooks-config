@@ -15,7 +15,11 @@ class AppHookConfigWidget(forms.Select):
             out = super(AppHookConfigWidget, self).render(name, value, attrs, choices)
         else:
             out = super(AppHookConfigWidget, self).render(name, value, attrs)
-        final_attrs = self.build_attrs(attrs, name=name)
+        try:
+            final_attrs = self.build_attrs(attrs, name=name)
+        except TypeError:
+            attrs['name'] = name
+            final_attrs = self.build_attrs(attrs)
         script = """
         <script>
         (function($) {

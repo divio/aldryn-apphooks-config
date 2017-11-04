@@ -36,7 +36,7 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
-        'django-appdata>=0.1.4',
+        'django-appdata>=0.2',
         'django-cms>=3.2'
     ],
     extra_requires={

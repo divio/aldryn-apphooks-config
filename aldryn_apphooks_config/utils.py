@@ -21,7 +21,6 @@ def get_app_instance(request):
     app = None
     if getattr(request, 'current_page', None) and request.current_page.application_urls:
         app = apphook_pool.get_apphook(request.current_page.application_urls)
-
     if app and app.app_config:
         try:
             config = None

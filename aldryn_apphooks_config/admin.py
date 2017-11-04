@@ -23,8 +23,7 @@ class BaseAppHookConfig(AppDataModelAdmin):
     """
     readonly_fields = ('type',)
 
-    @property
-    def declared_fieldsets(self):
+    def get_fieldsets(self, request, obj):
         return [
             (None, {'fields': ('type', 'namespace')}),
             (_('Config'), {'fields': self.get_config_fields()})
