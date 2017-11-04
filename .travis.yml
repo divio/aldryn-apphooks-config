@@ -6,6 +6,9 @@ sudo: false
 env:
   matrix:
     - TOXENV=flake8
+    - TOXENV=py36-django111-cms34
+    - TOXENV=py34-django110-cms34
+    - TOXENV=py27-django110-cms34
     - TOXENV=py35-django110-cms34
     - TOXENV=py35-django19-cms34
     - TOXENV=py35-django19-cms33

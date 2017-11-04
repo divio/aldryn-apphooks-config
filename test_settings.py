@@ -21,6 +21,7 @@ HELPER_SETTINGS = dict(
     INSTALLED_APPS=[
         'app_data',
         'cms.test_utils.project.sampleapp',
+        'djangocms_text_ckeditor',
         'aldryn_apphooks_config.tests.utils.example',
         'parler'
     ],
