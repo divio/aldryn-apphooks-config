@@ -6,7 +6,7 @@ from copy import deepcopy
 
 from cms import api
 from cms.apphook_pool import apphook_pool
-from cms.utils import get_cms_setting
+from cms.utils.conf import get_cms_setting
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import SimpleCookie
@@ -28,6 +28,8 @@ class AppHookConfigTestCase(BaseTestCase):
         self.language = settings.LANGUAGES[0][0]
         self.root_page = api.create_page(
             'root page', self.template, self.language, published=True)
+        if hasattr(self.root_page, 'set_as_homepage'):
+            self.root_page.set_as_homepage()
 
         self.ns_app_1 = ExampleConfig.objects.create(namespace='app1')
         self.ns_app_1.app_data.config.property = 'app1_property'

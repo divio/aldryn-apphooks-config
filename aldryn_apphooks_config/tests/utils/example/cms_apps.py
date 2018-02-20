@@ -9,16 +9,16 @@ from .models import ExampleConfig
 from .views import ArticleDetail, ArticleList
 
 
+@apphook_pool.register
 class ExampleApp(CMSConfigApp):
     name = 'Example'
-    urls = [
-        [
-            url(r'^$', ArticleList.as_view(), name='example_list'),
-            url(r'^(?P<slug>[\w_-]+)/$', ArticleDetail.as_view(), name='example_detail'),
-        ]
-    ]
     app_name = 'example'
     app_config = ExampleConfig
 
-
-apphook_pool.register(ExampleApp)
+    def get_urls(self, page=None, language=None, **kwargs):
+        return [
+            [
+                url(r'^$', ArticleList.as_view(), name='example_list'),
+                url(r'^(?P<slug>[\w_-]+)/$', ArticleDetail.as_view(), name='example_detail'),
+            ]
+        ]
