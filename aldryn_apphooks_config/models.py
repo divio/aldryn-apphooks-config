@@ -53,5 +53,5 @@ class AppHookConfig(models.Model):
         """
         try:
             return getattr(self.app_data.config, item)
-        except:
+        except Exception:
             raise AttributeError('attribute %s not found' % item)
