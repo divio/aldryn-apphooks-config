@@ -17,12 +17,14 @@ class AnotherExampleConfig(AppHookConfig):
     max_entries = models.SmallIntegerField(default=5)
 
 
+@setup_config
 class ExampleConfigForm(AppDataForm):
+    model = ExampleConfig
     property = forms.CharField()
     published_default = forms.BooleanField(initial=True, required=False)
-setup_config(ExampleConfigForm, ExampleConfig)
 
 
+@setup_config
 class AnotherExampleConfigForm(AppDataForm):
+    model = AnotherExampleConfig
     property = forms.CharField()
-setup_config(AnotherExampleConfigForm, AnotherExampleConfig)

@@ -33,13 +33,24 @@ def get_app_instance(request):
     return '', None
 
 
-def setup_config(form_class, config_model):
+def setup_config(form_class, config_model=None):
     """
     Register the provided form as config form for the provided config model
+
+    This can be used as a decorator by adding a `model` attribute to the config form::
+
+        @setup_config
+        class ExampleConfigForm(AppDataForm):
+            model = ExampleConfig
+
     :param form_class: Form class derived from AppDataForm
     :param config_model: Model class derived from AppHookConfig
     :return:
     """
+    # allow use as a decorator
+    if config_model is None:
+        return setup_config(form_class, form_class.model)
+
     app_registry.register('config', AppDataContainer.from_form(form_class), config_model)
 
 
