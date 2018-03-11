@@ -28,6 +28,8 @@ class AppHookConfigTestCase(BaseTestCase):
         self.language = settings.LANGUAGES[0][0]
         self.root_page = api.create_page(
             'root page', self.template, self.language, published=True)
+        # This is needed in django CMS 3.5+ to keep the same tree across
+        # all django CMS versions
         if hasattr(self.root_page, 'set_as_homepage'):
             self.root_page.set_as_homepage()
 
