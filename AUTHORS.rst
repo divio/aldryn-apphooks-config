@@ -5,9 +5,20 @@ Credits
 Development Lead
 ----------------
 
-* Iacopo Spalletti <i.spalletti@nephila.it>
+* Iacopo Spalletti
+* Paulo Alvarado
 
 Contributors
 ------------
 
-None yet. Why not be the first?
+* Angelo Dini
+* Angoreher
+* evildmp
+* Felipe Prenholato
+* Joseph Melettukunnel
+* Kim Thoenen
+* Kirill Kniazev
+* Martin Koistinen
+* mikek
+* SteinRobert
+* Tom Berger

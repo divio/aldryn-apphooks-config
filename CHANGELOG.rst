@@ -3,6 +3,16 @@ Changelog
 =========
 
 
+0.4.0 (unreleased)
+==================
+
+* Add Django 1.11 compatibility
+* Add django CMS 3.5 compatibility
+* Implement django-appdata 0.2 interface
+* Remove south migrations
+* Drop support for django CMS 3.3 and below
+* Allow use setup_config as decorators
+
 0.3.3 (2017-03-06)
 ==================
 
