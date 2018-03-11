@@ -24,8 +24,7 @@ admin.site.register(Article, ArticleAdmin)
 
 class ExampleConfigAdmin(BaseAppHookConfig):
 
-    @property
-    def declared_fieldsets(self):
+    def get_fieldsets(self, request, obj):
         return [
             (None, {'fields': ('type', 'namespace', 'app_title')}),
             ('Config', {'fields': self.get_config_fields()})

@@ -1,0 +1,17 @@
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            var sel = $('#{{ widget.attrs.id }}');
+            if (!sel.val()) {
+                sel.change(function () {
+                    $(this).apphook_reload_admin(
+                        '{{ widget.name }}', $("option:selected", $(this)).val()
+                    );
+                });
+            }
+        });
+    })(django.jQuery);
+</script>
+{% if not DJANGO_110 %}
+{% include 'django/forms/widgets/select.html' %}
+{% endif %}

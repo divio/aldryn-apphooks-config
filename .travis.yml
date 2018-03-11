@@ -1,32 +1,30 @@
 language: python
 
+python: 3.6
+
 # Use container based infrastructure
 sudo: false
 
 env:
   matrix:
     - TOXENV=flake8
-    - TOXENV=py35-django110-cms34
-    - TOXENV=py35-django19-cms34
-    - TOXENV=py35-django19-cms33
-    - TOXENV=py35-django19-cms32
-    - TOXENV=py35-django18-cms34
-    - TOXENV=py35-django18-cms33
-    - TOXENV=py35-django18-cms32
-    - TOXENV=py34-django110-cms34
-    - TOXENV=py34-django19-cms34
-    - TOXENV=py34-django19-cms33
-    - TOXENV=py34-django19-cms32
-    - TOXENV=py34-django18-cms34
-    - TOXENV=py34-django18-cms33
-    - TOXENV=py34-django18-cms32
-    - TOXENV=py27-django110-cms34
-    - TOXENV=py27-django19-cms34
-    - TOXENV=py27-django19-cms33
-    - TOXENV=py27-django19-cms32
+    - TOXENV=isort
+    - TOXENV=py36-django111-cms35
+    - TOXENV=py36-django110-cms35
+    - TOXENV=py36-django19-cms35
+    - TOXENV=py36-django18-cms35
+    - TOXENV=py36-django111-cms34
+    - TOXENV=py36-django110-cms34
+    - TOXENV=py36-django19-cms34
+    - TOXENV=py36-django18-cms34
+    - TOXENV=py35-django111-cms35
+    - TOXENV=py35-django111-cms34
+    - TOXENV=py34-django111-cms35
+    - TOXENV=py34-django111-cms34
+    - TOXENV=py27-django111-cms35
+    - TOXENV=py27-django111-cms34
+    - TOXENV=py27-django18-cms35
     - TOXENV=py27-django18-cms34
-    - TOXENV=py27-django18-cms33
-    - TOXENV=py27-django18-cms32
 
 
 cache:

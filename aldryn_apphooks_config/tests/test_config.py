@@ -6,7 +6,7 @@ from copy import deepcopy
 
 from cms import api
 from cms.apphook_pool import apphook_pool
-from cms.utils import get_cms_setting
+from cms.utils.conf import get_cms_setting
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import SimpleCookie
@@ -28,6 +28,10 @@ class AppHookConfigTestCase(BaseTestCase):
         self.language = settings.LANGUAGES[0][0]
         self.root_page = api.create_page(
             'root page', self.template, self.language, published=True)
+        # This is needed in django CMS 3.5+ to keep the same tree across
+        # all django CMS versions
+        if hasattr(self.root_page, 'set_as_homepage'):
+            self.root_page.set_as_homepage()
 
         self.ns_app_1 = ExampleConfig.objects.create(namespace='app1')
         self.ns_app_1.app_data.config.property = 'app1_property'
@@ -61,6 +65,7 @@ class AppHookConfigTestCase(BaseTestCase):
             for language, _ in settings.LANGUAGES[1:]:
                 api.create_title(language, page.get_slug(), page)
                 page.publish(language)
+        self.reload_urlconf()
 
     def test_configs(self):
         app = apphook_pool.get_apphook(self.page_1.application_urls)
@@ -336,9 +341,20 @@ class AppHookConfigTestCase(BaseTestCase):
 
         # Testing admin output for sample app specific implementation
         response = admin_instance.change_view(request, str(self.ns_app_1.pk))
-        self.assertContains(response, '<p>aldryn_apphooks_config.tests.utils.example.cms_appconfig.ExampleConfig</p>')
-        self.assertContains(response, '<p>app1</p>')
-        self.assertContains(response, 'name="config-property" type="text" value="app1_property"')
+        try:
+            self.assertContains(
+                response,
+                '<div class="readonly">aldryn_apphooks_config.tests.utils.example.cms_appconfig.ExampleConfig</div>'
+            )
+            self.assertContains(response, '<div class="readonly">app1</div>')
+            self.assertContains(response, 'value="app1_property"')
+        except AssertionError:
+            self.assertContains(
+                response,
+                '<p>aldryn_apphooks_config.tests.utils.example.cms_appconfig.ExampleConfig</p>'
+            )
+            self.assertContains(response, '<p>app1</p>')
+            self.assertContains(response, 'name="config-property" type="text" value="app1_property"')
 
     def test_admin(self):
         from django.contrib import admin
@@ -361,13 +377,22 @@ class AppHookConfigTestCase(BaseTestCase):
         response = admin_instance.add_view(request)
         self.assertContains(response, '$(this).apphook_reload_admin')
         self.assertContains(response, 'aldryn_apphooks_config')
-        self.assertContains(response, '<option value="1" selected="selected">%s</option>' % self.ns_app_1)
-        self.assertContains(response, '<input id="id_published"')
+        self.assertRegexpMatches(
+            force_text(response.content),
+            '(<option value="1" selected="selected">%s</option>|<option value="1" selected>%s</option>)' % (
+                self.ns_app_1, self.ns_app_1
+            )
+        )
+        self.assertContains(response, 'id="id_published"')
 
         self.ns_app_1.app_data.config.published_default = True
         self.ns_app_1.save()
         response = admin_instance.add_view(request)
-        self.assertContains(response, '<input checked="checked" id="id_published"')
+        response.render()
+        self.assertRegexpMatches(
+            force_text(response.content),
+            '(checked id="id_published"|id="id_published" checked|<input checked="checked" id="id_published")'
+        )
 
     def test_templatetag(self):
         article = Article.objects.create(title='news_1_app_1_config1',
