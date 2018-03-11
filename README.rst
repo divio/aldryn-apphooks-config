@@ -72,6 +72,15 @@ Names are ``AppHookConfigTranslatableManager`` and
     # at the above step
     setup_config(BlogOptionForm, NewsBlogConfig)
 
+    # setup_config can be used as a decorator too, but the `model`
+    # attribute must be added to the form class
+    @setup_config
+    class BlogOptionForm(AppDataForm):
+        model = NewsBlogConfig
+
+
+
+
 * Define an admin class for the AppHookConfig model (usually in ``admin.py``::
 
     from django.contrib import admin
