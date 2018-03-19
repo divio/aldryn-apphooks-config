@@ -3,7 +3,7 @@ Changelog
 =========
 
 
-0.4.0 (unreleased)
+0.4.0 (2018-03-19)
 ==================
 
 * Add Django 1.11 compatibility
