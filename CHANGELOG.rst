@@ -3,6 +3,11 @@ Changelog
 =========
 
 
+0.4.1 (unreleased)
+==================
+
+* django-appdata>=0.2.0 is now required
+
 0.4.0 (2018-03-19)
 ==================
 
