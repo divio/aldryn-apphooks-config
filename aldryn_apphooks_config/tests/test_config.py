@@ -367,6 +367,7 @@ class AppHookConfigTestCase(BaseTestCase):
         request = self.get_page_request(self.page_3, self.user)
         response = admin_instance.add_view(request)
         self.assertContains(response, '$(this).apphook_reload_admin')
+        self.assertContains(response, 'var sel = $(\'#id_section\');')
         self.assertContains(response, 'aldryn_apphooks_config')
         self.assertContains(response, '<option value="1">%s</option>' % self.ns_app_1)
         self.assertContains(response, '<option value="2">%s</option>' % self.ns_app_2)
