@@ -23,5 +23,7 @@ class AppHookConfigWidget(forms.Select):
         else:
             final_attrs = self.build_attrs(attrs, name=name)
             final_attrs['DJANGO_110'] = True
+            final_attrs['widget'] = final_attrs
+            final_attrs['widget']['attrs'] = attrs
             script = render_to_string(self.template_name, context=final_attrs)
             return mark_safe(script + out)
