@@ -3,6 +3,11 @@ Changelog
 =========
 
 
+0.4.2 (unreleased)
+==================
+
+* Fix issue with Django 1.10 and below in AppHookConfigWidget 
+
 0.4.1 (2018-04-10)
 ==================
 
