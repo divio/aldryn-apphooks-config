@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from app_data import AppDataContainer, app_registry
-from cms.apphook_pool import apphook_pool
 from django.core.urlresolvers import Resolver404, resolve
 from django.db.models import ForeignKey
 from django.utils.translation import get_language_from_request, override
+
+from cms.apphook_pool import apphook_pool
+
+from app_data import AppDataContainer, app_registry
 
 # making key app/model specific to avoid inheritance issues
 APP_CONFIG_FIELDS_KEY = '_app_config_field_names_{app_label}_{model_name}'

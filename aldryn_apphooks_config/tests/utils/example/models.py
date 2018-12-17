@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
+from django.db import models
+
+from parler.models import TranslatableModel, TranslatedFields
+
 from aldryn_apphooks_config.fields import AppHookConfigField
 from aldryn_apphooks_config.managers import AppHookConfigManager
 from aldryn_apphooks_config.managers.parler import AppHookConfigTranslatableManager
-from django.db import models
-from parler.models import TranslatableModel, TranslatedFields
 
 from .cms_appconfig import AnotherExampleConfig, ExampleConfig
 

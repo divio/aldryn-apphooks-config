@@ -3,9 +3,10 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import copy
 
-from app_data.admin import AppDataModelAdmin
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
+
+from app_data.admin import AppDataModelAdmin
 
 from .utils import get_apphook_model
 

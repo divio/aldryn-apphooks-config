@@ -4,15 +4,17 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os.path
 from copy import deepcopy
 
-from cms import api
-from cms.apphook_pool import apphook_pool
-from cms.utils.conf import get_cms_setting
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import SimpleCookie
 from django.template import RequestContext, Template
 from django.utils.encoding import force_text
 from django.utils.six import StringIO
+
+from cms import api
+from cms.apphook_pool import apphook_pool
+from cms.utils.conf import get_cms_setting
+
 from djangocms_helper.base_test import BaseTestCase
 
 from ..utils import get_app_instance, get_apphook_configs, get_apphook_field_names
@@ -107,7 +109,7 @@ class AppHookConfigTestCase(BaseTestCase):
         try:
             self.assertEqual(url, reverse('admin:%s_%s_add' % (ExampleConfig._meta.app_label,
                                                                ExampleConfig._meta.model_name)))
-        except AttributeError:  #NOQA
+        except AttributeError:  # noqa
             self.assertEqual(url, reverse('admin:%s_%s_add' % (ExampleConfig._meta.app_label,
                                                                ExampleConfig._meta.module_name)))
 
