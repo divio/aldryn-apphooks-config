@@ -1,12 +1,13 @@
 Changelog
 =========
 
-0.5.0 (2018-12-18)
+0.5.1 (2018-12-18)
 ==================
 
 * Added support for Django 2.0 and 2.1
 * Removed support for Django < 1.11
 * Adapted testing infrastructure (tox/travis) to incorporate django CMS 3.6
+* Fixed setup.py
 
 
 0.4.2 (2018-12-17)
