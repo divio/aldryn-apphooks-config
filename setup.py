@@ -5,7 +5,7 @@ from aldryn_apphooks_config import __version__
 REQUIREMENTS = [
     'django-appdata>=0.2.0',
     'django-cms>=3.4.5'
-],
+]
 
 
 CLASSIFIERS = [
@@ -24,7 +24,7 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
-],
+]
 
 
 setup(
