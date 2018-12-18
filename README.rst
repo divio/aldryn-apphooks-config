@@ -28,6 +28,7 @@ Contributing
 ------------
 
 We're grateful to all contributors who have helped create and maintain this package.
+
 Contributors are listed at `contributions page
 <https://github.com/divio/djangocms-video/graphs/contributors>`_.
 
