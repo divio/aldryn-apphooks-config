@@ -1,43 +1,35 @@
 language: python
 
-python: 3.6
-
-# Use container based infrastructure
 sudo: false
 
-env:
-  matrix:
-    - TOXENV=flake8
-    - TOXENV=isort
-    - TOXENV=py36-django111-cms35
-    - TOXENV=py36-django110-cms35
-    - TOXENV=py36-django19-cms35
-    - TOXENV=py36-django18-cms35
-    - TOXENV=py36-django111-cms34
-    - TOXENV=py36-django110-cms34
-    - TOXENV=py36-django19-cms34
-    - TOXENV=py36-django18-cms34
-    - TOXENV=py35-django111-cms35
-    - TOXENV=py35-django111-cms34
-    - TOXENV=py34-django111-cms35
-    - TOXENV=py34-django111-cms34
-    - TOXENV=py27-django111-cms35
-    - TOXENV=py27-django111-cms34
-    - TOXENV=py27-django18-cms35
-    - TOXENV=py27-django18-cms34
-
-
-cache:
-  directories:
-    - $HOME/.wheelhouse
+matrix:
+  include:
+    - python: 3.5
+      env: TOX_ENV='flake8'
+    - python: 3.5
+      env: TOX_ENV='isort'
+    # Django 1.11
+    - python: 2.7
+      env: DJANGO='dj111' CMS='cms34'
+    - python: 3.5
+      env: DJANGO='dj111' CMS='cms35'
+    - python: 3.5
+      env: DJANGO='dj111' CMS='cms36'
+    # Django 2.0
+    - python: 3.5
+      env: DJANGO='dj20' CMS='cms36'
+    # Django 2.1
+    - python: 3.5
+      env: DJANGO='dj21' CMS='cms36'
 
 install:
-  - pip install tox
-  - pip install coveralls
+  - pip install tox coverage
+  - "if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then export PY_VER=py27; fi"
+  - "if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then export PY_VER=py35; fi"
+  - "if [[ ${DJANGO}z != 'z' ]]; then export TOX_ENV=$PY_VER-$DJANGO-$CMS; fi"
 
-script: COMMAND='coverage run' tox -e"$TOXENV"
+script:
+  - tox -e $TOX_ENV
 
-after_success: coveralls
-
-notifications:
-  webhooks: http://addons.us-iad-rs.aldryn.io/en/travis-endpoint/
+after_success:
+  - coveralls

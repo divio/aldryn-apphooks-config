@@ -1,67 +1,46 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+from setuptools import find_packages, setup
 
-import os
-import sys
+from aldryn_apphooks_config import __version__
 
-import aldryn_apphooks_config
+REQUIREMENTS = [
+    'django-appdata>=0.2.0',
+    'django-cms>=3.4.5'
+],
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
 
-version = aldryn_apphooks_config.__version__
+CLASSIFIERS = [
+    'Development Status :: 5 - Production/Stable',
+    'Framework :: Django',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: BSD License',
+    'Natural Language :: English',
+    'Framework :: Django',
+    'Framework :: Django :: 1.11',
+    'Framework :: Django :: 2.0',
+    'Framework :: Django :: 2.1',
+    'Programming Language :: Python :: 2',
+    'Programming Language :: Python :: 2.7',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.4',
+    'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
+],
 
-if sys.argv[-1] == 'publish':
-    os.system('python setup.py sdist upload')
-    print('You probably want to also tag the version now:')
-    print('  git tag -a %s -m \'version %s\'' % (version, version))
-    print('  git push --tags')
-    sys.exit()
-
-readme = open('README.rst').read()
-history = open('CHANGELOG.rst').read().replace('.. :changelog:', '')
 
 setup(
     name='aldryn-apphooks-config',
-    version=version,
-    description='''Namespaces based configuration for Apphooks''',
-    long_description=readme + '\n\n' + history,
+    version=__version__,
+    description='Namespaces based configuration for Apphooks',
+    long_description=open('README.rst').read(),
     author='Iacopo Spalletti',
     author_email='i.spalletti@nephila.it',
     url='https://github.com/aldryn/aldryn-apphooks-config',
-    packages=[
-        'aldryn_apphooks_config',
-    ],
     include_package_data=True,
-    install_requires=[
-        'django-appdata>=0.2.0',
-        'django-cms>=3.4'
-    ],
-    extra_requires={
-        'parler': 'django-parler>=1.4'
-    },
-    test_suite='test_settings.run',
-    license='BSD',
+    install_requires=REQUIREMENTS,
     zip_safe=False,
     keywords='aldryn-apphooks-config',
-    classifiers=[
-        'Development Status :: 4 - Beta',
-        'Framework :: Django',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
-        'Natural Language :: English',
-        'Framework :: Django',
-        'Framework :: Django :: 1.8',
-        'Framework :: Django :: 1.9',
-        'Framework :: Django :: 1.10',
-        'Framework :: Django :: 1.11',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-    ],
+    license='BSD',
+    packages=find_packages(exclude=['tests']),
+    classifiers=CLASSIFIERS,
+    test_suite='tests.settings.run',
 )

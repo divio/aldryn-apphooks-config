@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from cms.app_base import CMSApp
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
+
+from cms.app_base import CMSApp
 
 
 class CMSConfigApp(CMSApp):

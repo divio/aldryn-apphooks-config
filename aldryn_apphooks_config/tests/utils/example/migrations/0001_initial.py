@@ -118,4 +118,24 @@ class Migration(migrations.Migration):
             name='config',
             field=aldryn_apphooks_config.fields.AppHookConfigField(help_text='When selecting a value, the form is reloaded to get the updated default', on_delete=django.db.models.deletion.CASCADE, to='example.AnotherExampleConfig', verbose_name='config'),
         ),
+        migrations.AlterField(
+            model_name='anotherexampleconfig',
+            name='namespace',
+            field=models.CharField(default=None, max_length=100, unique=True, verbose_name='Instance namespace'),
+        ),
+        migrations.AlterField(
+            model_name='anotherexampleconfig',
+            name='type',
+            field=models.CharField(max_length=100, verbose_name='Type'),
+        ),
+        migrations.AlterField(
+            model_name='exampleconfig',
+            name='namespace',
+            field=models.CharField(default=None, max_length=100, unique=True, verbose_name='Instance namespace'),
+        ),
+        migrations.AlterField(
+            model_name='exampleconfig',
+            name='type',
+            field=models.CharField(max_length=100, verbose_name='Type'),
+        ),
     ]
