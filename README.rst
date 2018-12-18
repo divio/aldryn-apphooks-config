@@ -24,6 +24,14 @@ namespace, which is saved in the same field in the ``Page`` model as the
 plain namespaces.
 
 
+Contributing
+------------
+
+We're grateful to all contributors who have helped create and maintain this package.
+Contributors are listed at `contributions page
+<https://github.com/divio/djangocms-video/graphs/contributors>`_.
+
+
 Supported django CMS versions
 -----------------------------
 
