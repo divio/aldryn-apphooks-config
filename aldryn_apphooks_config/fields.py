@@ -3,6 +3,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from django import forms
 from django.db import models
+from django.db.models import CASCADE
 from django.utils.translation import ugettext_lazy as _
 
 from .widgets import AppHookConfigWidget
@@ -21,6 +22,7 @@ class AppHookConfigFormField(forms.ModelChoiceField):
 class AppHookConfigField(models.ForeignKey):
 
     def __init__(self, *args, **kwargs):
+        kwargs.update({'on_delete': getattr(kwargs, 'on_delete', CASCADE)})
         if 'help_text' not in kwargs:
             kwargs.update({'help_text': _('When selecting a value, the form is reloaded to '
                                           'get the updated default')})

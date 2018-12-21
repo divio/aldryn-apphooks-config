@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from django.core.urlresolvers import Resolver404, resolve
+from django.urls import Resolver404, resolve
 from django.db.models import ForeignKey
 from django.utils.translation import get_language_from_request, override
 
@@ -63,7 +63,7 @@ def _get_apphook_field_names(model):
     from .models import AppHookConfig  # avoid circular dependencies
     fields = []
     for field in model._meta.fields:
-        if isinstance(field, ForeignKey) and issubclass(field.rel.to, AppHookConfig):
+        if isinstance(field, ForeignKey) and issubclass(field.remote_field.model, AppHookConfig):
             fields.append(field)
     return [field.name for field in fields]
 
@@ -104,4 +104,4 @@ def get_apphook_model(model, app_config_attribute):
     :param app_config_attribute: Fieldname of the app_config
     :return: app_config model
     """
-    return model._meta.get_field(app_config_attribute).rel.to
+    return model._meta.get_field(app_config_attribute).remote_field.model

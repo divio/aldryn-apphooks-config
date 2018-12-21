@@ -4,8 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 from functools import partial
 
 from django import template
-from django.core import urlresolvers
-from django.core.urlresolvers import NoReverseMatch
+from django import urls
 
 from ..utils import get_app_instance
 
@@ -38,7 +37,7 @@ def namespace_url(context, view_name, *args, **kwargs):
         namespace += ':'
 
     reverse = partial(
-        urlresolvers.reverse, '{0:s}{1:s}'.format(namespace, view_name))
+        urls.reverse, '{0:s}{1:s}'.format(namespace, view_name))
 
     # We're explicitly NOT happy to just re-raise the exception, as that may
     # adversely affect stack traces.
@@ -58,5 +57,5 @@ def namespace_url(context, view_name, *args, **kwargs):
             return reverse(args=args)
         else:
             return reverse()
-    except NoReverseMatch:
+    except urls.NoReverseMatch:
         return default
