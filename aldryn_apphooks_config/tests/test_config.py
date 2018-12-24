@@ -5,7 +5,7 @@ import os.path
 from copy import deepcopy
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import SimpleCookie
 from django.template import RequestContext, Template
 from django.utils.encoding import force_text
@@ -431,7 +431,7 @@ class AppHookConfigTestCase(BaseTestCase):
         self.assertEqual(field_names, ['section'])
 
         field_names = get_apphook_field_names(News)
-        self.assertEqual(set(field_names), set(['config', 'section']))
+        self.assertEqual(set(field_names), (['config', 'section']))
 
         field_names = get_apphook_field_names(NotApphookedModel)
         self.assertEqual(field_names, [])
@@ -444,7 +444,7 @@ class AppHookConfigTestCase(BaseTestCase):
         self.assertEqual(field_names, ['section'])
 
         field_names = get_apphook_field_names(News())
-        self.assertEqual(set(field_names), set(['config', 'section']))
+        self.assertEqual(set(field_names), (['config', 'section']))
 
         field_names = get_apphook_field_names(NotApphookedModel())
         self.assertEqual(field_names, [])
@@ -460,7 +460,7 @@ class AppHookConfigTestCase(BaseTestCase):
 
         obj = News(section=self.ns_app_1, config=self.ns_app_3)
         configs = get_apphook_configs(obj)
-        self.assertEqual(set(configs), set([self.ns_app_1, self.ns_app_3]))
+        self.assertEqual(set(configs), ([self.ns_app_1, self.ns_app_3]))
 
         obj = NotApphookedModel()
         configs = get_apphook_configs(obj)

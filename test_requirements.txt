@@ -6,4 +6,7 @@ tox>=1.7.0
 djangocms-helper
 pillow
 django-parler>=1.4
-django-appdata>=0.2.0
+
+# Change after release new versions of django-appdata:
+#django-appdata>=0.2.0
+https://github.com/vThaian/django-appdata/archive/add-django-21-support.zip
