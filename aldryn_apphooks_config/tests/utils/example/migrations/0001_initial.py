@@ -98,7 +98,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='exampleconfig',
-            unique_together={('type', 'namespace')},
+            unique_together=set([('type', 'namespace')]),
         ),
         migrations.AddField(
             model_name='article',
@@ -107,11 +107,11 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='anotherexampleconfig',
-            unique_together={('type', 'namespace')},
+            unique_together=set([('type', 'namespace')]),
         ),
         migrations.AlterUniqueTogether(
             name='translatablearticletranslation',
-            unique_together={('language_code', 'master')},
+            unique_together=set([('type', 'namespace')]),
         ),
         migrations.AddField(
             model_name='news',
