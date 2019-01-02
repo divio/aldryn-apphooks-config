@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from django.urls import Resolver404, resolve
 from django.db.models import ForeignKey
+from django.urls import Resolver404, resolve
 from django.utils.translation import get_language_from_request, override
 
 from cms.apphook_pool import apphook_pool

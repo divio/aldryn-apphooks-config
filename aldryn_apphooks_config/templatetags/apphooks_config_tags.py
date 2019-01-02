@@ -3,8 +3,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from functools import partial
 
-from django import template
-from django import urls
+from django import template, urls
 
 from ..utils import get_app_instance
 

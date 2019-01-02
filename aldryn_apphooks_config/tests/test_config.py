@@ -5,9 +5,9 @@ import os.path
 from copy import deepcopy
 
 from django.conf import settings
-from django.urls import reverse
 from django.http import SimpleCookie
 from django.template import RequestContext, Template
+from django.urls import reverse
 from django.utils.encoding import force_text
 from django.utils.six import StringIO
 
