@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.5.2 (unreleased)
+0.5.2 (2019-01-02)
 ==================
 
 * Changed deprecated `rel.to` to `remote_field.model`
