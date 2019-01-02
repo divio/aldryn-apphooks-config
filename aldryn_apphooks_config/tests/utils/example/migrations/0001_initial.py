@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=234, verbose_name='title')),
                 ('slug', models.SlugField()),
-                ('published', models.BooleanField(blank=True, default=True)),
+                ('published', models.BooleanField(default=True)),
             ],
         ),
         migrations.CreateModel(
@@ -111,7 +111,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='translatablearticletranslation',
-            unique_together=set([('type', 'namespace')]),
+            unique_together=set([('language_code', 'master')]),
         ),
         migrations.AddField(
             model_name='news',
