@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.5.2 (unreleased)
+==================
+
+* Changed deprecated `rel.to` to `remote_field.model`
+* Fixed migration for example app
+* Fixed issues for Django 2.0 and up
+
+
 0.5.1 (2018-12-18)
 ==================
 

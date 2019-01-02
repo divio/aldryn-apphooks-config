@@ -6,4 +6,6 @@ tox>=1.7.0
 djangocms-helper
 pillow
 django-parler>=1.4
-django-appdata>=0.2.0
+
+# Divio version with added support for Django 2.1:
+https://github.com/divio/django-appdata/archive/add-django-21-support.zip
