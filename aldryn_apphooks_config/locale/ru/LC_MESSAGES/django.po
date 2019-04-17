@@ -1,0 +1,68 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-17 15:55+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%"
+"100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\admin.py:30
+msgid "Config"
+msgstr "Конфигурация"
+
+#: .\admin.py:45
+msgid "Select app config"
+msgstr "Выберите конфигурацию приложения"
+
+#: .\admin.py:46
+msgid "Select the app config for the new object"
+msgstr "Выберите конфигурацию приложения для нового объекта"
+
+#: .\fields.py:27
+msgid "When selecting a value, the form is reloaded to get the updated default"
+msgstr "После выбора значения, форма перезагружается для получения обновлённых значений по умолчанию"
+
+#: .\managers\base.py:22
+msgid "Can't find any relation to an ApphookConfig model in {0}"
+msgstr "Не могу найти связь с моделью ApphookConfig в {0}"
+
+#: .\managers\base.py:28
+msgid "Can't find relation to ApphookConfig model named \"{0}\" in \"{1}\""
+msgstr "Не могу найти связь с моделью ApphookConfig названной \"{0}\" в \"{1}\""
+
+#: .\managers\base.py:35
+msgid ""
+"\"{0}\" has {1} relations to an ApphookConfig model. Please, specify which "
+"one to use in argument \"to\". Choices are: {2}"
+msgstr ""
+"\"{0}\" имеет {1} связи с моделью ApphookConfig. Пожалуйста, уточните какую "
+"именно использовать в аргументе \"to\". Варианты: {2}"
+
+#: .\models.py:18
+msgid "Type"
+msgstr "Тип"
+
+#: .\models.py:22
+msgid "Instance namespace"
+msgstr "Пространство имён экземпляра"
+
+#: .\models.py:32
+msgid "Apphook config"
+msgstr "Конфигурация apphook"
+
+#: .\models.py:33
+msgid "Apphook configs"
+msgstr "Конфигурации apphook"
