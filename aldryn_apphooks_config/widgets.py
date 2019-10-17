@@ -10,7 +10,7 @@ class AppHookConfigWidget(forms.Select):
     template_name = 'aldryn_apphooks_config/admin/apphook_config_widget.html'
 
     class Media:
-        js = ('js/aldryn_apphooks_config/aldryn_apphooks_config.js',)
+        js = ('admin/js/jquery.init.js', 'js/aldryn_apphooks_config/aldryn_apphooks_config.js',)
 
     def render(self, name, value, attrs=None, choices=()):
         if choices:  # pragma: no cover
