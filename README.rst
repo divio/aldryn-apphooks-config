@@ -147,7 +147,7 @@ Names are ``AppHookConfigTranslatableManager`` and
             return ('config.show_authors', ...)
 
 * Define a CMSApp derived from CMSConfigApp provided by this application
-(in ``cms_app.py``/``cms_apps.py``)::
+  (in ``cms_app.py``/``cms_apps.py``)::
 
     from aldryn_apphooks_config.app_base import CMSConfigApp
     from cms.apphook_pool import apphook_pool

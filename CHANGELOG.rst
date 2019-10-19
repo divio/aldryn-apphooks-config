@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-0.5.3 (unreleased)
+0.5.3 (2019-10-19)
 ==================
 
 * Fix media asset declaration on django 2.2+
