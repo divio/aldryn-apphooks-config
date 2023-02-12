@@ -1,18 +1,18 @@
 import os.path
 from copy import deepcopy
+from io import StringIO
 
 from django.conf import settings
 from django.http import SimpleCookie
 from django.template import RequestContext, Template
 from django.urls import reverse
 from django.utils.encoding import force_str
-from django.utils.six import StringIO
 
 from cms import api
 from cms.apphook_pool import apphook_pool
 from cms.utils.conf import get_cms_setting
 
-from djangocms_helper.base_test import BaseTestCase
+from app_helper.base_test import BaseTestCase
 
 from ..utils import get_app_instance, get_apphook_configs, get_apphook_field_names
 from .utils.example.models import (
@@ -102,7 +102,7 @@ class AppHookConfigTestCase(BaseTestCase):
         self.assertEqual(("", None), config)
 
     def test_no_page(self):
-        request = self.request_factory.get("/en/sample/login/")
+        request = self.request("/en/sample/login/")
         request.user = self.user
         request.session = {}
         request.cookies = SimpleCookie()

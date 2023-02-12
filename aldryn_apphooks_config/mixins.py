@@ -19,6 +19,4 @@ class AppConfigMixin:
     def render_to_response(self, context, **response_kwargs):
         if "current_app" in response_kwargs:  # pragma: no cover
             response_kwargs["current_app"] = self.namespace
-        return super().render_to_response(
-            context, **response_kwargs
-        )
+        return super().render_to_response(context, **response_kwargs)

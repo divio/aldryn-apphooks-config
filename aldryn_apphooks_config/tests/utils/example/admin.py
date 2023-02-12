@@ -16,8 +16,6 @@ class ArticleAdmin(FrontendEditableAdminMixin, ModelAppHookConfig, admin.ModelAd
     app_config_values = {"published_default": "published"}
 
 
-
-
 @admin.register(ExampleConfig)
 class ExampleConfigAdmin(BaseAppHookConfig):
     def get_fieldsets(self, request, obj):
@@ -28,5 +26,3 @@ class ExampleConfigAdmin(BaseAppHookConfig):
 
     def get_config_fields(self):
         return ["config.property", "config.published_default"]
-
-

@@ -39,13 +39,6 @@ repos:
           - flake8-quotes
           - flake8-tidy-imports
           - pep8-naming
-  - repo: https://github.com/econchick/interrogate
-    rev: 1.5.0
-    hooks:
-      - id: interrogate
-        args:
-          - "-cpyproject.toml"
-          - "--quiet"
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.3.1
     hooks:
