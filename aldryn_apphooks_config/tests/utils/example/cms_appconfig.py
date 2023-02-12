@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function, unicode_literals
-
 from django import forms
 from django.db import models
 
@@ -12,7 +9,8 @@ from aldryn_apphooks_config.utils import setup_config
 
 class ExampleConfig(AppHookConfig):
     """Adds some translatable, per-app-instance fields."""
-    app_title = models.CharField('application title', max_length=234)
+
+    app_title = models.CharField("application title", max_length=234)
 
 
 class AnotherExampleConfig(AppHookConfig):
