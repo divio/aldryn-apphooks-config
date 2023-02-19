@@ -4,4 +4,4 @@ tox>=1.7.0
 django-app-helper
 pillow
 django-parler>=1.4
-django-appdata>=0.3.2
+https://github.com/ella/django-appdata/archive/refs/heads/feature/upgrade.zip
