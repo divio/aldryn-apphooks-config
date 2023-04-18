@@ -1,5 +1,4 @@
 from django.db import models
-
 from parler.models import TranslatableModel, TranslatedFields
 
 from aldryn_apphooks_config.fields import AppHookConfigField
@@ -25,9 +24,7 @@ class News(Article):
 
 
 class TranslatableArticle(TranslatableModel):
-    translations = TranslatedFields(
-        title=models.CharField("title", max_length=234), slug=models.SlugField()
-    )
+    translations = TranslatedFields(title=models.CharField("title", max_length=234), slug=models.SlugField())
     section = AppHookConfigField(ExampleConfig, verbose_name="section")
 
     objects = AppHookConfigTranslatableManager()

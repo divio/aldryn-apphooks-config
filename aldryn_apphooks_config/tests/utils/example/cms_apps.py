@@ -1,6 +1,5 @@
-from django.urls import path, re_path
-
 from cms.apphook_pool import apphook_pool
+from django.urls import path, re_path
 
 from aldryn_apphooks_config.app_base import CMSConfigApp
 

@@ -14,15 +14,13 @@ class QuerySetMixin:
         fields = get_apphook_field_names(self.model)
         if not fields:
             raise ValueError(
-                gettext(
-                    "Can't find any relation to an ApphookConfig model in {0}"
-                ).format(self.model.__name__)
+                gettext("Can't find any relation to an ApphookConfig model in {0}").format(self.model.__name__)
             )
         if to and to not in fields:
             raise ValueError(
-                gettext(
-                    "Can't find relation to ApphookConfig model named " '"{0}" in "{1}"'
-                ).format(to, self.model.__name__)
+                gettext("Can't find relation to ApphookConfig model named " '"{0}" in "{1}"').format(
+                    to, self.model.__name__
+                )
             )
         if len(fields) > 1 and to not in fields:
             raise ValueError(

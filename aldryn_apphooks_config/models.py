@@ -1,8 +1,6 @@
+from app_data import AppDataField
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from app_data import AppDataField
-from six import python_2_unicode_compatible
 
 
 class AppHookConfig(models.Model):

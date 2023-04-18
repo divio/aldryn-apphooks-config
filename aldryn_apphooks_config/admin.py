@@ -1,9 +1,8 @@
 import copy
 
+from app_data.admin import AppDataModelAdmin
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
-
-from app_data.admin import AppDataModelAdmin
 
 from .utils import get_apphook_model
 
@@ -64,9 +63,7 @@ class ModelAppHookConfig:
             return getattr(obj, self.app_config_attribute)
         elif request.GET.get(self.app_config_attribute, False):
             config_model = get_apphook_model(self.model, self.app_config_attribute)
-            return config_model.objects.get(
-                pk=int(request.GET.get(self.app_config_attribute, False))
-            )
+            return config_model.objects.get(pk=int(request.GET.get(self.app_config_attribute, False)))
         return False
 
     def _set_config_defaults(self, request, form, obj=None):
@@ -89,9 +86,7 @@ class ModelAppHookConfig:
         """
         for config_option, field in self.app_config_values.items():
             if field in form.base_fields:
-                form.base_fields[field].initial = self.get_config_data(
-                    request, obj, config_option
-                )
+                form.base_fields[field].initial = self.get_config_data(request, obj, config_option)
         return form
 
     def get_fieldsets(self, request, obj=None):
@@ -136,9 +131,7 @@ class ModelAppHookConfig:
         if not config and self.app_config_attribute in request.GET:
             config_model = get_apphook_model(self.model, self.app_config_attribute)
             try:
-                config = config_model.objects.get(
-                    pk=request.GET[self.app_config_attribute]
-                )
+                config = config_model.objects.get(pk=request.GET[self.app_config_attribute])
             except config_model.DoesNotExist:  # pragma: no cover
                 pass
         if config:

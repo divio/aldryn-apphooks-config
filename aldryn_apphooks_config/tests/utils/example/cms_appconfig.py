@@ -1,7 +1,6 @@
+from app_data import AppDataForm
 from django import forms
 from django.db import models
-
-from app_data import AppDataForm
 
 from aldryn_apphooks_config.models import AppHookConfig
 from aldryn_apphooks_config.utils import setup_config

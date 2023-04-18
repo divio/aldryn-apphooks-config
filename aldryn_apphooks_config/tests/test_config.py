@@ -2,17 +2,15 @@ import os.path
 from copy import deepcopy
 from io import StringIO
 
+from app_helper.base_test import BaseTestCase
+from cms import api
+from cms.apphook_pool import apphook_pool
+from cms.utils.conf import get_cms_setting
 from django.conf import settings
 from django.http import SimpleCookie
 from django.template import RequestContext, Template
 from django.urls import reverse
 from django.utils.encoding import force_str
-
-from cms import api
-from cms.apphook_pool import apphook_pool
-from cms.utils.conf import get_cms_setting
-
-from app_helper.base_test import BaseTestCase
 
 from ..utils import get_app_instance, get_apphook_configs, get_apphook_field_names
 from .utils.example.models import (
@@ -29,9 +27,7 @@ class AppHookConfigTestCase(BaseTestCase):
     def setUp(self):
         self.template = get_cms_setting("TEMPLATES")[0][0]
         self.language = settings.LANGUAGES[0][0]
-        self.root_page = api.create_page(
-            "root page", self.template, self.language, published=True
-        )
+        self.root_page = api.create_page("root page", self.template, self.language, published=True)
         # This is needed in django CMS 3.5+ to keep the same tree across
         # all django CMS versions
         if hasattr(self.root_page, "set_as_homepage"):
@@ -126,18 +122,12 @@ class AppHookConfigTestCase(BaseTestCase):
         try:
             self.assertEqual(
                 url,
-                reverse(
-                    "admin:%s_%s_add"
-                    % (ExampleConfig._meta.app_label, ExampleConfig._meta.model_name)
-                ),
+                reverse("admin:{}_{}_add".format(ExampleConfig._meta.app_label, ExampleConfig._meta.model_name)),
             )
         except AttributeError:  # noqa
             self.assertEqual(
                 url,
-                reverse(
-                    "admin:%s_%s_add"
-                    % (ExampleConfig._meta.app_label, ExampleConfig._meta.module_name)
-                ),
+                reverse("admin:{}_{}_add".format(ExampleConfig._meta.app_label, ExampleConfig._meta.module_name)),
             )
 
     def test_app_1_list_empty(self):
@@ -153,18 +143,14 @@ class AppHookConfigTestCase(BaseTestCase):
         self.assertContains(response, "objects:0")
 
     def test_app_1_list_items(self):
-        Article.objects.create(
-            title="article_app_1", slug="article_app_1", section=self.ns_app_1
-        )
+        Article.objects.create(title="article_app_1", slug="article_app_1", section=self.ns_app_1)
         response = self.client.get("/en/page_1/")
         self.assertContains(response, "namespace:app1")
         self.assertContains(response, "property:app1_property")
         self.assertContains(response, "objects:1")
 
     def test_app_2_list_items(self):
-        Article.objects.create(
-            title="article_app_2", slug="article_app_2", section=self.ns_app_2
-        )
+        Article.objects.create(title="article_app_2", slug="article_app_2", section=self.ns_app_2)
         response = self.client.get("/en/page_2/")
         self.assertContains(response, "namespace:app2")
         self.assertContains(response, "property:app2_property")
@@ -175,15 +161,9 @@ class AppHookConfigTestCase(BaseTestCase):
         ns_app_3.app_data.config.property = "app3_property"
         ns_app_3.save()
 
-        Article.objects.create(
-            title="article_1_app_1", slug="article_1_app_1", section=self.ns_app_1
-        )
-        Article.objects.create(
-            title="article_2_app_1", slug="article_2_app_1", section=self.ns_app_1
-        )
-        Article.objects.create(
-            title="article_1_app_2", slug="article_1_app_2", section=self.ns_app_2
-        )
+        Article.objects.create(title="article_1_app_1", slug="article_1_app_1", section=self.ns_app_1)
+        Article.objects.create(title="article_2_app_1", slug="article_2_app_1", section=self.ns_app_1)
+        Article.objects.create(title="article_1_app_2", slug="article_1_app_2", section=self.ns_app_2)
 
         self.assertEqual(2, Article.objects.namespace(self.ns_app_1.namespace).count())
         self.assertEqual(1, Article.objects.namespace(self.ns_app_2.namespace).count())
@@ -210,15 +190,9 @@ class AppHookConfigTestCase(BaseTestCase):
             ' Please, specify which one to use in argument "to".'
             " Choices are: {}".format("News", "2", "section, config")
         )
-        self.assertRaisesMessage(
-            ValueError, msg, News.objects.namespace, ans_config_1.namespace
-        )
-        self.assertEqual(
-            1, News.objects.namespace(ans_config_1.namespace, to="config").count()
-        )
-        self.assertEqual(
-            2, News.objects.namespace(self.ns_app_1.namespace, to="section").count()
-        )
+        self.assertRaisesMessage(ValueError, msg, News.objects.namespace, ans_config_1.namespace)
+        self.assertEqual(1, News.objects.namespace(ans_config_1.namespace, to="config").count())
+        self.assertEqual(2, News.objects.namespace(self.ns_app_1.namespace, to="section").count())
 
     def test_translatable_apphook_manager(self):
         t1 = TranslatableArticle.objects.language("en").create(
@@ -230,20 +204,14 @@ class AppHookConfigTestCase(BaseTestCase):
         )
         self.assertEqual(t2.get_current_language(), "de")
 
+        self.assertEqual(2, TranslatableArticle.objects.namespace(self.ns_app_1.namespace).count())
         self.assertEqual(
-            2, TranslatableArticle.objects.namespace(self.ns_app_1.namespace).count()
+            1,
+            TranslatableArticle.objects.namespace(self.ns_app_1.namespace).translated("en").count(),
         )
         self.assertEqual(
             1,
-            TranslatableArticle.objects.namespace(self.ns_app_1.namespace)
-            .translated("en")
-            .count(),
-        )
-        self.assertEqual(
-            1,
-            TranslatableArticle.objects.namespace(self.ns_app_1.namespace)
-            .translated("de")
-            .count(),
+            TranslatableArticle.objects.namespace(self.ns_app_1.namespace).translated("de").count(),
         )
 
     def test_get_config_data(self):
@@ -332,9 +300,7 @@ class AppHookConfigTestCase(BaseTestCase):
         request.GET = deepcopy(request.GET)
         request.GET["section"] = self.ns_app_1.pk
         form = admin_instance.get_form(request, article)
-        self.assertEqual(
-            list(form.base_fields.keys()), ["title", "slug", "section", "published"]
-        )
+        self.assertEqual(list(form.base_fields.keys()), ["title", "slug", "section", "published"])
         self.assertEqual(form.base_fields["section"].initial, self.ns_app_1)
 
         # no object is set, parameter passed through the request
@@ -342,9 +308,7 @@ class AppHookConfigTestCase(BaseTestCase):
         request.GET = deepcopy(request.GET)
         request.GET["section"] = self.ns_app_1.pk
         form = admin_instance.get_form(request, None)
-        self.assertEqual(
-            list(form.base_fields.keys()), ["title", "slug", "section", "published"]
-        )
+        self.assertEqual(list(form.base_fields.keys()), ["title", "slug", "section", "published"])
         self.assertEqual(form.base_fields["section"].initial, self.ns_app_1)
 
         self.ns_app_2.delete()
@@ -355,9 +319,7 @@ class AppHookConfigTestCase(BaseTestCase):
         # no object is set, no parameter passed through the request, one namespace
         request = self.get_page_request(self.page_3, self.user)
         form = admin_instance.get_form(request, None)
-        self.assertEqual(
-            list(form.base_fields.keys()), ["title", "slug", "section", "published"]
-        )
+        self.assertEqual(list(form.base_fields.keys()), ["title", "slug", "section", "published"])
         self.assertEqual(form.base_fields["section"].initial, self.ns_app_1)
 
     def test_apphook_admin(self):
@@ -390,9 +352,7 @@ class AppHookConfigTestCase(BaseTestCase):
                 "<p>aldryn_apphooks_config.tests.utils.example.cms_appconfig.ExampleConfig</p>",
             )
             self.assertContains(response, "<p>app1</p>")
-            self.assertContains(
-                response, 'name="config-property" type="text" value="app1_property"'
-            )
+            self.assertContains(response, 'name="config-property" type="text" value="app1_property"')
 
     def test_admin(self):
         from django.contrib import admin
@@ -441,39 +401,23 @@ class AppHookConfigTestCase(BaseTestCase):
         )
 
         request = self.get_page_request(self.page_1, self.user)
-        context = RequestContext(
-            request, {"object": article, "current_app": self.ns_app_1.namespace}
-        )
+        context = RequestContext(request, {"object": article, "current_app": self.ns_app_1.namespace})
 
-        template = Template(
-            '{% load apphooks_config_tags %}{% namespace_url "example_detail" object.slug %}'
-        )
+        template = Template('{% load apphooks_config_tags %}{% namespace_url "example_detail" object.slug %}')
         response = template.render(context)
-        self.assertEqual(
-            response, os.path.join(self.page_1.get_absolute_url(), article.slug, "")
-        )
+        self.assertEqual(response, os.path.join(self.page_1.get_absolute_url(), article.slug, ""))
 
-        template = Template(
-            '{% load apphooks_config_tags %}{% namespace_url "example_detail" slug=object.slug %}'
-        )
+        template = Template('{% load apphooks_config_tags %}{% namespace_url "example_detail" slug=object.slug %}')
         response = template.render(context)
-        self.assertEqual(
-            response, os.path.join(self.page_1.get_absolute_url(), article.slug, "")
-        )
+        self.assertEqual(response, os.path.join(self.page_1.get_absolute_url(), article.slug, ""))
 
-        template = Template(
-            '{% load apphooks_config_tags %}{% namespace_url "example_list" %}'
-        )
+        template = Template('{% load apphooks_config_tags %}{% namespace_url "example_list" %}')
         response = template.render(context)
         self.assertEqual(response, self.page_1.get_absolute_url())
 
         request = self.get_page_request(self.page_2, self.user)
-        context = RequestContext(
-            request, {"object": article, "current_app": self.ns_app_2.namespace}
-        )
-        template = Template(
-            '{% load apphooks_config_tags %}{% namespace_url "example_list" %}'
-        )
+        context = RequestContext(request, {"object": article, "current_app": self.ns_app_2.namespace})
+        template = Template('{% load apphooks_config_tags %}{% namespace_url "example_list" %}')
         response = template.render(context)
         self.assertEqual(response, self.page_2.get_absolute_url())
 
