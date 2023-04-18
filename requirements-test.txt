@@ -5,3 +5,4 @@ django-app-helper
 pillow
 django-parler>=1.4
 https://github.com/ella/django-appdata/archive/refs/heads/feature/upgrade.zip
+coverage>=7
