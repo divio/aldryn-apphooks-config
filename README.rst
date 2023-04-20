@@ -1,11 +1,3 @@
-**Deprecated**
-
-This project is no longer supported.
-
-Divio will undertake no further development or maintenance of this project. If you are interested in continuing to 
-develop it, use the fork functionality from GitHub. We are not able to transfer ownership of the repository to another 
-party.
-
 |PyPI Version| |Build Status| |Coverage Status|
 
 ======================
@@ -44,9 +36,9 @@ Contributors are listed at `contributions page
 Supported versions
 -----------------------------
 
-Python: 3.5, 3.6, 3.7, 3.8
-Django: 1.11, 2.2, 3.0
-django CMS: 3.5, 3.6, 3.7
+Python: 3.9 - 3.11
+Django: 3.2 - 4.2
+django CMS: 3.9 - 3.11
 
 
 Implementation step-guide

@@ -1,16 +1,11 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function, unicode_literals
-
+from app_data import AppDataContainer, app_registry
+from cms.apphook_pool import apphook_pool
 from django.db.models import ForeignKey
 from django.urls import Resolver404, resolve
 from django.utils.translation import get_language_from_request, override
 
-from cms.apphook_pool import apphook_pool
-
-from app_data import AppDataContainer, app_registry
-
 # making key app/model specific to avoid inheritance issues
-APP_CONFIG_FIELDS_KEY = '_app_config_field_names_{app_label}_{model_name}'
+APP_CONFIG_FIELDS_KEY = "_app_config_field_names_{app_label}_{model_name}"
 
 
 def get_app_instance(request):
@@ -21,7 +16,7 @@ def get_app_instance(request):
     :return: namespace, config
     """
     app = None
-    if getattr(request, 'current_page', None) and request.current_page.application_urls:
+    if getattr(request, "current_page", None) and request.current_page.application_urls:
         app = apphook_pool.get_apphook(request.current_page.application_urls)
     if app and app.app_config:
         try:
@@ -32,7 +27,7 @@ def get_app_instance(request):
             return namespace, config
         except Resolver404:
             pass
-    return '', None
+    return "", None
 
 
 def setup_config(form_class, config_model=None):
@@ -53,7 +48,7 @@ def setup_config(form_class, config_model=None):
     if config_model is None:
         return setup_config(form_class, form_class.model)
 
-    app_registry.register('config', AppDataContainer.from_form(form_class), config_model)
+    app_registry.register("config", AppDataContainer.from_form(form_class), config_model)
 
 
 def _get_apphook_field_names(model):
@@ -61,6 +56,7 @@ def _get_apphook_field_names(model):
     Return all foreign key field names for a AppHookConfig based model
     """
     from .models import AppHookConfig  # avoid circular dependencies
+
     fields = []
     for field in model._meta.fields:
         if isinstance(field, ForeignKey) and issubclass(field.remote_field.model, AppHookConfig):
@@ -75,10 +71,7 @@ def get_apphook_field_names(model):
     :param model: model class or object
     :return: list of foreign key field names to AppHookConfigs
     """
-    key = APP_CONFIG_FIELDS_KEY.format(
-        app_label=model._meta.app_label,
-        model_name=model._meta.object_name
-    ).lower()
+    key = APP_CONFIG_FIELDS_KEY.format(app_label=model._meta.app_label, model_name=model._meta.object_name).lower()
     if not hasattr(model, key):
         field_names = _get_apphook_field_names(model)
         setattr(model, key, field_names)

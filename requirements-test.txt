@@ -1,0 +1,9 @@
+mock>=1.0.1
+flake8>=2.1.0
+tox>=1.7.0
+django-app-helper
+pillow
+django-parler>=1.4
+https://github.com/ella/django-appdata/archive/refs/heads/master.zip
+coverage
+coveralls>=2.0

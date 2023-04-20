@@ -1,12 +1,8 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function, unicode_literals
-
 import copy
 
-from django.core.exceptions import ObjectDoesNotExist
-from django.utils.translation import ugettext_lazy as _
-
 from app_data.admin import AppDataModelAdmin
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.translation import gettext_lazy as _
 
 from .utils import get_apphook_model
 
@@ -22,12 +18,13 @@ class BaseAppHookConfig(AppDataModelAdmin):
       shown in the AppHookConfig fieldset. Every structure available in a single
       ModelAdmin fieldset `fields` definition can be returned by this method.
     """
-    readonly_fields = ('type',)
+
+    readonly_fields = ("type",)
 
     def get_fieldsets(self, request, obj):
         return [
-            (None, {'fields': ('type', 'namespace')}),
-            (_('Config'), {'fields': self.get_config_fields()})
+            (None, {"fields": ("type", "namespace")}),
+            (_("Config"), {"fields": self.get_config_fields()}),
         ]
 
     def get_config_fields(self):
@@ -35,15 +32,15 @@ class BaseAppHookConfig(AppDataModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if obj and obj.pk:
-            return tuple(self.readonly_fields) + ('namespace',)
+            return tuple(self.readonly_fields) + ("namespace",)
         else:
             return self.readonly_fields
 
 
-class ModelAppHookConfig(object):
-    app_config_attribute = 'app_config'
-    app_config_selection_title = _('Select app config')
-    app_config_selection_desc = _('Select the app config for the new object')
+class ModelAppHookConfig:
+    app_config_attribute = "app_config"
+    app_config_selection_title = _("Select app config")
+    app_config_selection_desc = _("Select the app config for the new object")
     app_config_values = {}
 
     def _app_config_select(self, request, obj):
@@ -66,9 +63,7 @@ class ModelAppHookConfig(object):
             return getattr(obj, self.app_config_attribute)
         elif request.GET.get(self.app_config_attribute, False):
             config_model = get_apphook_model(self.model, self.app_config_attribute)
-            return config_model.objects.get(
-                pk=int(request.GET.get(self.app_config_attribute, False))
-            )
+            return config_model.objects.get(pk=int(request.GET.get(self.app_config_attribute, False)))
         return False
 
     def _set_config_defaults(self, request, form, obj=None):
@@ -103,12 +98,18 @@ class ModelAppHookConfig(object):
         :return:
         """
         app_config_default = self._app_config_select(request, obj)
-        if app_config_default is None and request.method == 'GET':
-            return (_(self.app_config_selection_title),
-                    {'fields': (self.app_config_attribute, ),
-                     'description': _(self.app_config_selection_desc)}),
+        if app_config_default is None and request.method == "GET":
+            return (
+                (
+                    _(self.app_config_selection_title),
+                    {
+                        "fields": (self.app_config_attribute,),
+                        "description": _(self.app_config_selection_desc),
+                    },
+                ),
+            )
         else:
-            return super(ModelAppHookConfig, self).get_fieldsets(request, obj)
+            return super().get_fieldsets(request, obj)
 
     def get_config_data(self, request, obj, name):
         """
@@ -146,7 +147,7 @@ class ModelAppHookConfig(object):
         If only one namespace exists, the current is selected and the normal form
         is used.
         """
-        form = super(ModelAppHookConfig, self).get_form(request, obj, **kwargs)
+        form = super().get_form(request, obj, **kwargs)
         if self.app_config_attribute not in form.base_fields:
             return form
         app_config_default = self._app_config_select(request, obj)
@@ -155,10 +156,12 @@ class ModelAppHookConfig(object):
             get = copy.copy(request.GET)
             get[self.app_config_attribute] = app_config_default.pk
             request.GET = get
-        elif app_config_default is None and request.method == 'GET':
+        elif app_config_default is None and request.method == "GET":
+
             class InitialForm(form):
                 class Meta(form.Meta):
                     fields = (self.app_config_attribute,)
+
             form = InitialForm
         form = self._set_config_defaults(request, form, obj)
         return form

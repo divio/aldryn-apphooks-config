@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function, unicode_literals
-
 from functools import partial
 
 from django import template, urls
@@ -27,20 +24,19 @@ def namespace_url(context, view_name, *args, **kwargs):
     with the value of what should be returned when no match is found.
     """
 
-    namespace = kwargs.pop('namespace', None)
+    namespace = kwargs.pop("namespace", None)
 
     if not namespace:
-        namespace, __ = get_app_instance(context['request'])
+        namespace, __ = get_app_instance(context["request"])
 
     if namespace:
-        namespace += ':'
+        namespace += ":"
 
-    reverse = partial(
-        urls.reverse, '{0:s}{1:s}'.format(namespace, view_name))
+    reverse = partial(urls.reverse, "{:s}{:s}".format(namespace, view_name))
 
     # We're explicitly NOT happy to just re-raise the exception, as that may
     # adversely affect stack traces.
-    if 'default' not in kwargs:
+    if "default" not in kwargs:
         if kwargs:
             return reverse(kwargs=kwargs)
         elif args:
@@ -48,7 +44,7 @@ def namespace_url(context, view_name, *args, **kwargs):
         else:
             return reverse()
 
-    default = kwargs.pop('default', None)
+    default = kwargs.pop("default", None)
     try:
         if kwargs:
             return reverse(kwargs=kwargs)
