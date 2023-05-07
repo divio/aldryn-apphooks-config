@@ -2,6 +2,11 @@ Changelog
 =========
 
 
+0.7.0 (Unreleased)
+==================
+
+* Add Django 3.2+ support
+
 0.6.0 (2020-05-12)
 ==================
 
@@ -15,7 +20,7 @@ Changelog
 0.5.2 (2019-01-02)
 ==================
 
-* Changed deprecated `rel.to` to `remote_field.model`
+* Changed deprecated ``rel.to`` to ``remote_field.model``
 * Fixed migration for example app
 * Fixed issues for Django 2.0 and up
 

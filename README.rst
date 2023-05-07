@@ -1,4 +1,4 @@
-|PyPI Version| |Build Status| |Coverage Status|
+|PyPI Version| |Coverage Status|
 
 ======================
 aldryn-apphooks-config
@@ -171,7 +171,7 @@ make sure you add the following code to your TestCase::
 
 .. |PyPI Version| image:: http://img.shields.io/pypi/v/aldryn-apphooks-config.svg
    :target: https://pypi.python.org/pypi/aldryn-apphooks-config
-.. |Build Status| image:: http://img.shields.io/travis/aldryn/aldryn-apphooks-config/master.svg
-   :target: https://travis-ci.org/aldryn/aldryn-apphooks-config
+.. |Build Status| image:: https://img.shields.io/github/actions/workflow/status/divio/aldryn-apphooks-config/test.yml?style=flat-square
+   :target: https://github.com/divio/aldryn-apphooks-config/actions/workflows/test.yml
 .. |Coverage Status| image:: http://img.shields.io/coveralls/aldryn/aldryn-apphooks-config/master.svg
    :target: https://coveralls.io/r/aldryn/aldryn-apphooks-config?branch=master
