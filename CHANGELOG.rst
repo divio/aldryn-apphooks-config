@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-0.7.0 (Unreleased)
+0.7.0 (2023-05-07)
 ==================
 
 * Add Django 3.2+ support
